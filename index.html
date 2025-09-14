@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mann Mitra 💙</title>
+    
+    <!-- Google Fonts for multilingual support (Hindi) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'apple-blue': '#3b82f6',
+            },
+            fontFamily: {
+              // Added Noto Sans for better multilingual support
+              sans: ['Noto Sans', '-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Roboto', 'sans-serif'],
+            },
+            keyframes: {
+              breathe: {
+                '0%, 100%': { transform: 'scale(0.8)', opacity: '0.8' },
+                '50%': { transform: 'scale(1.1)', opacity: '1' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+            animation: {
+              breathe: 'breathe 8s ease-in-out infinite',
+              fadeIn: 'fadeIn 0.5s ease-out forwards',
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Style fix for the date picker icon -->
+    <style>
+      /* Ensure the calendar icon in date inputs is visible and clickable */
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.7;
+        filter: invert(0.4);
+      }
+      input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.15.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-gradient-to-b from-sky-100 to-white">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Mann Mitra 💙",
+  "description": "Mann Mitra is a youth mental wellness app prototype, providing a confidential, supportive, and non-judgmental space for users. It features an AI chat, a journaling space, breathing exercises, and helpful resources.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
