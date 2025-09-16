@@ -1,8 +1,9 @@
 import React from 'react';
-import { Screen } from '../types';
+import { Screen, TranslationKey } from '../types';
 
 interface ResourcesScreenProps {
   onNavigate: (screen: Screen) => void;
+  t: (key: TranslationKey) => string;
 }
 
 interface HelplineItemProps {
@@ -31,17 +32,17 @@ const HelplineItem: React.FC<HelplineItemProps> = ({ name, description, number }
 );
 
 
-const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate }) => {
+const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate, t }) => {
   const helplines = [
-    { name: 'KIRAN Mental Health Helpline', description: '24x7, a Government of India initiative.', number: '1800-599-0019' },
-    { name: 'Vandrevala Foundation Helpline', description: '24x7, multilingual support.', number: '+91-9999-666-555' },
-    { name: 'AASRA (Suicide Prevention)', description: '24x7, confidential support for those in distress.', number: '+91-98204-66726' },
-    { name: 'iCALL Psychosocial Helpline (TISS)', description: 'Mon–Sat, 8am–10pm. Professional counselling.', number: '+91-9152987821' },
+    { name: t('helplineKiran'), description: t('helplineKiranDesc'), number: '1800-599-0019' },
+    { name: t('helplineVandrevala'), description: t('helplineVandrevalaDesc'), number: '+91-9999-666-555' },
+    { name: t('helplineAasra'), description: t('helplineAasraDesc'), number: '+91-98204-66726' },
+    { name: t('helplineIcall'), description: t('helplineIcallDesc'), number: '+91-9152987821' },
   ];
 
   return (
     <div className="p-6 h-full flex flex-col bg-white">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">You’re Not Alone 💙</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('youAreNotAlone')}</h1>
       
       <div className="space-y-4 flex-grow overflow-y-auto">
         {helplines.map((line) => (
@@ -50,14 +51,14 @@ const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate }) => {
       </div>
 
       <p className="text-center text-gray-500 text-sm mt-6">
-        If you are in immediate danger, please call your local emergency number.
+        {t('immediateDangerWarning')}
       </p>
 
       <button
         onClick={() => onNavigate(Screen.Chat)}
         className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg mt-4 shadow-lg hover:bg-blue-600 transition-colors"
       >
-        ← Back to Chat
+        {t('backToChat')}
       </button>
     </div>
   );

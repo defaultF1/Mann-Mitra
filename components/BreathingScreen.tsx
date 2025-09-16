@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Screen } from '../types';
+import { Screen, TranslationKey } from '../types';
 
 interface BreathingScreenProps {
   onNavigate: (screen: Screen) => void;
+  t: (key: TranslationKey) => string;
 }
 
-const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
-  const [instruction, setInstruction] = useState('Get Ready...');
+const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t }) => {
+  const [instruction, setInstruction] = useState(t('getReady'));
   const [isStarted, setIsStarted] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
@@ -55,22 +56,22 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
   useEffect(() => {
     if (!isStarted) return;
 
-    if (instruction.startsWith('Inhale')) {
+    if (instruction.startsWith(t('inhale').substring(0,6))) { // Using substring to match start
       playSound(440, 4); // A4 note (440 Hz) for 4 seconds
-    } else if (instruction.startsWith('Exhale')) {
+    } else if (instruction.startsWith(t('exhale').substring(0,6))) {
       playSound(330, 4); // E4 note (approx 330 Hz) for 4 seconds
     }
-  }, [instruction, isStarted, playSound]);
+  }, [instruction, isStarted, playSound, t]);
 
   // Manage the breathing instruction cycle
   useEffect(() => {
     if (!isStarted) return;
 
     const sequence = [
-      { text: 'Inhale…2…3…4 🌿', duration: 4000 },
-      { text: 'Hold…', duration: 2000 },
-      { text: 'Exhale…2…3…4 🌿', duration: 4000 },
-      { text: 'Pause…', duration: 2000 },
+      { text: t('inhale'), duration: 4000 },
+      { text: t('hold'), duration: 2000 },
+      { text: t('exhale'), duration: 4000 },
+      { text: t('pause'), duration: 2000 },
     ];
     let currentIndex = 0;
     setInstruction(sequence[currentIndex].text); // Set initial instruction
@@ -83,7 +84,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
     return () => {
       clearInterval(interval);
     };
-  }, [isStarted]);
+  }, [isStarted, t]);
 
   // Clean up AudioContext on unmount
   useEffect(() => {
@@ -96,9 +97,9 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
     <div className="flex flex-col h-full items-center justify-center bg-white relative p-6">
       {!isStarted ? (
         <div className="text-center animate-fadeIn flex flex-col items-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Take a Deep Breath 🌿</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">{t('takeADeepBreath')}</h1>
             <p className="text-lg text-gray-600 mb-8 max-w-xs">
-              Follow this simple box breathing exercise to relax, refocus, and recharge your mind.
+              {t('breathingExerciseDescription')}
             </p>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-apple-blue mb-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -108,7 +109,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
                 className="bg-apple-blue text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors"
                 aria-label="Begin breathing exercise"
             >
-                Start Breathing 🌬️
+                {t('startBreathing')}
             </button>
         </div>
       ) : (
@@ -130,7 +131,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate }) => {
           onClick={() => onNavigate(Screen.Chat)}
           className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors"
         >
-          {isStarted ? 'End Session & Return' : '← Back to Chat'}
+          {isStarted ? t('endSessionAndReturn') : t('backToChat')}
         </button>
       </div>
     </div>

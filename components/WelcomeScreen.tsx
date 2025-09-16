@@ -1,8 +1,9 @@
 import React from 'react';
-import { Screen } from '../types';
+import { Screen, TranslationKey } from '../types';
 
 interface WelcomeScreenProps {
   onNavigate: (screen: Screen) => void;
+  t: (key: TranslationKey) => string;
 }
 
 const playClickSound = () => {
@@ -33,7 +34,7 @@ const playClickSound = () => {
 };
 
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate, t }) => {
 
   const handleStart = () => {
     playClickSound();
@@ -58,7 +59,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate }) => {
         </svg>
 
         <p className="text-lg text-gray-600 max-w-xs">
-          Your Mind’s Friend — Confidential. Supportive. Non-judgmental.
+          {t('yourMindsFriend')}
         </p>
       </div>
 
@@ -66,7 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate }) => {
         onClick={handleStart}
         className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors duration-300"
       >
-        Start Conversation →
+        {t('startConversation')}
       </button>
     </div>
   );

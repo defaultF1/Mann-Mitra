@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Screen } from './types';
+import { Screen, translations, TranslationKey, Language } from './types';
 import OnboardingScreen from './components/OnboardingScreen';
 import WelcomeScreen from './components/WelcomeScreen';
 import ChatScreen from './components/ChatScreen';
@@ -8,9 +9,12 @@ import BreathingScreen from './components/BreathingScreen';
 import ResourcesScreen from './components/ResourcesScreen';
 
 const USER_PROFILE_KEY = 'mann-mitra-user-profile';
+const APP_LANGUAGE_KEY = 'mann-mitra-app-language';
+
 
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen | null>(null);
+  const [language, setLanguageState] = useState<Language>('en');
 
   useEffect(() => {
     try {
@@ -20,26 +24,54 @@ const App: React.FC = () => {
       } else {
         setCurrentScreen(Screen.Onboarding);
       }
+      
+      const savedLanguage = localStorage.getItem(APP_LANGUAGE_KEY) as Language | null;
+      if (savedLanguage) {
+        setLanguageState(savedLanguage);
+      }
+
     } catch (error) {
       console.error("Could not access local storage:", error);
       setCurrentScreen(Screen.Onboarding);
     }
   }, []);
 
+  const setLanguage = (lang: Language) => {
+    try {
+      localStorage.setItem(APP_LANGUAGE_KEY, lang);
+      setLanguageState(lang);
+    } catch (error) {
+      console.error("Could not save language to local storage:", error);
+    }
+  };
+
+  const t = (key: TranslationKey): string => {
+    // Extract the base language code (e.g., 'en' from 'en-US').
+    const langCode = language.split('-')[0];
+
+    // Check if a translation set exists for the language code.
+    // The type assertion is safe because we fall back to 'en'.
+    const translationSet = (translations as Record<string, typeof translations.en>)[langCode] || translations.en;
+
+    // Return the specific translation, falling back to English if the key is missing.
+    return translationSet[key] || translations.en[key];
+  };
+
+
   const renderScreen = () => {
     switch (currentScreen) {
       case Screen.Onboarding:
-        return <OnboardingScreen onNavigate={setCurrentScreen} />;
+        return <OnboardingScreen onNavigate={setCurrentScreen} t={t} language={language} setLanguage={setLanguage} />;
       case Screen.Welcome:
-        return <WelcomeScreen onNavigate={setCurrentScreen} />;
+        return <WelcomeScreen onNavigate={setCurrentScreen} t={t} />;
       case Screen.Chat:
-        return <ChatScreen onNavigate={setCurrentScreen} />;
+        return <ChatScreen onNavigate={setCurrentScreen} t={t} language={language} setLanguage={setLanguage} />;
       case Screen.Journal:
-        return <JournalScreen onNavigate={setCurrentScreen} />;
+        return <JournalScreen onNavigate={setCurrentScreen} t={t} language={language} />;
       case Screen.Breathing:
-        return <BreathingScreen onNavigate={setCurrentScreen} />;
+        return <BreathingScreen onNavigate={setCurrentScreen} t={t} />;
       case Screen.Resources:
-        return <ResourcesScreen onNavigate={setCurrentScreen} />;
+        return <ResourcesScreen onNavigate={setCurrentScreen} t={t} />;
       default:
         // Render a loading state or null while checking for the profile
         return (
