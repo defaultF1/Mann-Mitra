@@ -1,44 +1,32 @@
+
+
 import React from 'react';
 import { Screen, TranslationKey } from '../types';
 
 interface WelcomeScreenProps {
   onNavigate: (screen: Screen) => void;
   t: (key: TranslationKey) => string;
+  playClick: () => void;
 }
 
-const playClickSound = () => {
-  // Create audio context only when needed, with fallback for Safari
-  const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-  if (!AudioContext) return;
-  const audioContext = new AudioContext();
+const USER_PROFILE_KEY = 'mann-mitra-user-profile';
 
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
-  // Sound parameters for a short, pleasant "blip"
-  oscillator.type = 'sine';
-  oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
-  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-  gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01); // Quick fade in
-
-  oscillator.start(audioContext.currentTime);
-  // Fade out and stop the sound quickly
-  gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.1);
-  oscillator.stop(audioContext.currentTime + 0.1);
-
-  // Close the context after a short delay to free up resources
-  setTimeout(() => audioContext.close(), 500);
-};
-
-
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate, t }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNavigate, t, playClick }) => {
 
   const handleStart = () => {
-    playClickSound();
-    onNavigate(Screen.Chat);
+    playClick();
+    try {
+      const userProfile = localStorage.getItem(USER_PROFILE_KEY);
+      if (userProfile) {
+        onNavigate(Screen.Chat);
+      } else {
+        onNavigate(Screen.Onboarding);
+      }
+    } catch (error) {
+      console.error("Could not access local storage:", error);
+      // Fallback to onboarding if storage is inaccessible
+      onNavigate(Screen.Onboarding);
+    }
   };
 
   return (

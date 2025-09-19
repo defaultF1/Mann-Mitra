@@ -4,9 +4,10 @@ import { Screen, TranslationKey } from '../types';
 interface BreathingScreenProps {
   onNavigate: (screen: Screen) => void;
   t: (key: TranslationKey) => string;
+  playClick: () => void;
 }
 
-const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t }) => {
+const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t, playClick }) => {
   const [instruction, setInstruction] = useState(t('getReady'));
   const [isStarted, setIsStarted] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -37,6 +38,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t }) => {
   }, []);
 
   const handleStart = () => {
+    playClick();
     if (!audioCtxRef.current) {
       // Create AudioContext on user interaction, with fallback for Safari
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -50,6 +52,11 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t }) => {
     }
     
     setIsStarted(true);
+  };
+  
+  const handleNav = () => {
+    playClick();
+    onNavigate(Screen.Chat);
   };
 
   // Play sound when instruction changes
@@ -128,7 +135,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t }) => {
 
       <div className="absolute bottom-0 left-0 right-0 p-8">
         <button
-          onClick={() => onNavigate(Screen.Chat)}
+          onClick={handleNav}
           className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors"
         >
           {isStarted ? t('endSessionAndReturn') : t('backToChat')}
