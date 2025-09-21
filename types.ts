@@ -7,6 +7,7 @@ export enum Screen {
   Journal,
   Breathing,
   Resources,
+  Trends, // Added new screen for mood trends
 }
 
 export interface ChatMessage {
@@ -21,12 +22,20 @@ export interface EmergencyContact {
   phone: string;
 }
 
+export interface Memory {
+  id: number;
+  fact: string;
+  date?: string; // Stored as YYYY-MM-DD if present
+  createdAt: string; // ISO string
+}
+
 export interface UserProfile {
   name: string;
   gender: string;
   dob: string;
   country: string; // Added country field
   emergencyContacts: EmergencyContact[];
+  memories?: Memory[]; // NEW: Add memories array
 }
 
 // A new interface to structure saved chat conversations
@@ -44,9 +53,21 @@ export interface JournalEntry {
   date: string; // ISO string date
 }
 
+// Type definition for mood categories
+export type Mood = 'happy' | 'neutral' | 'sad' | 'stressed';
+
+// Interface for a single mood log entry
+export interface MoodEntry {
+  id: number;
+  date: string; // ISO string date
+  mood: Mood;
+  note?: string; // Optional short note
+}
+
+
 // Interface for dynamically fetched helpline resources
 export interface HelplineResource {
-  name: string;
+  name:string;
   description: string;
   number: string;
   website?: string; // Optional website
@@ -363,6 +384,10 @@ export const translations = {
     spouse: "Spouse",
     sibling: "Sibling",
     selectRelation: "Select Relation",
+    updateYourInfo: "Update Your Info",
+    saveChanges: "Save Changes",
+    edit: "Edit",
+    cancel: "Cancel",
 
     // Welcome
     yourMindsFriend: "Your Mind’s Friend — Confidential. Supportive. Non-judgmental.",
@@ -379,7 +404,7 @@ export const translations = {
     initialChatMessage: "Hey there! I'm Mann Mitra, your mind's friend. Thanks for stopping by. What's on your mind today? Feel free to share as much or as little as you'd like. 💙",
     listening: "Listening...",
     thinking: "Thinking...",
-    yourProfile: "Your Info",
+    yourInfo: "Your Info",
     name: "Name",
     noProfileInfo: "No profile information found.",
     clearDataAndReset: "Clear Data & Reset App",
@@ -427,6 +452,9 @@ export const translations = {
     confirm: "Confirm?",
     greatJobJournaling: "Great job journaling ✨ Writing reduces stress by 30%.",
     reflectionOn: "Reflection on ",
+    howAreYouFeeling: "How are you feeling right now?",
+    addANote: "Add a note... (optional)",
+    saveMood: "Save Mood",
     
     // Breathing
     takeADeepBreath: "Take a Deep Breath 🌿",
@@ -453,6 +481,23 @@ export const translations = {
     helplineAasraDesc: "24x7, confidential support for those in distress.",
     helplineIcall: "iCALL Psychosocial Helpline (TISS)",
     helplineIcallDesc: "Mon–Sat, 8am–10pm. Professional counselling.",
+
+    // Trends
+    trends: "Trends",
+    moodTrends: "Mood Trends",
+    calendar: "Calendar",
+    graph: "Graph",
+    week: "Week",
+    month: "Month",
+    year: "Year",
+    noMoodsLogged: "No moods logged yet.",
+    logMoodsToSeeTrends: "Log your mood after journaling to see your trends here.",
+    happy: "Happy",
+    neutral: "Neutral",
+    sad: "Sad",
+    stressed: "Stressed",
+    lightMode: "Light Mode",
+    darkMode: "Dark Mode",
   },
   'hi-Latn': {
     // Onboarding
@@ -488,6 +533,10 @@ export const translations = {
     spouse: "Jeevansaathi",
     sibling: "Bhai/Behen",
     selectRelation: "Rishta Chunein",
+    updateYourInfo: "Apni Jaankari Update Karein",
+    saveChanges: "Badlav Save Karein",
+    edit: "Edit Karein",
+    cancel: "Cancel Karein",
 
     // Welcome
     yourMindsFriend: "Aapke Mann Ka Dost — Confidential. Supportive. Non-judgmental.",
@@ -504,7 +553,7 @@ export const translations = {
     initialChatMessage: "Hey! Main hoon Mann Mitra, aapke mann ka dost. Yahan aane ke liye shukriya. Aaj aapke mann mein kya hai? Jo bhi hai, jaisa bhi hai, aap share kar sakte hain. 💙",
     listening: "Sunn raha hoon...",
     thinking: "Soch raha hoon...",
-    yourProfile: "Aapki Jaankari",
+    yourInfo: "Aapki Jaankari",
     name: "Naam",
     noProfileInfo: "Koi profile jaankari nahi mili.",
     clearDataAndReset: "Data Saaf Karein & App Reset Karein",
@@ -552,7 +601,10 @@ export const translations = {
     confirm: "Pakka?",
     greatJobJournaling: "Badhiya journaling ki ✨ Likhne se stress 30% kam hota hai.",
     reflectionOn: "Is par Reflection ",
-    
+    howAreYouFeeling: "Aap abhi kaisa mehsoos kar rahe hain?",
+    addANote: "Ek note jodein... (optional)",
+    saveMood: "Mood Save Karein",
+
     // Breathing
     takeADeepBreath: "Ek Gehri Saans Lein 🌿",
     breathingExerciseDescription: "Apne mann ko relax, refocus, aur recharge karne ke liye is simple box breathing exercise ko follow karein.",
@@ -578,6 +630,23 @@ export const translations = {
     helplineAasraDesc: "24x7, pareshani mein logon ke liye gupt sahayata.",
     helplineIcall: "iCALL Psychosocial Helpline (TISS)",
     helplineIcallDesc: "Mon–Sat, 8am–10pm. Professional counselling.",
+    
+    // Trends
+    trends: "Trends",
+    moodTrends: "Mood ke Trends",
+    calendar: "Calendar",
+    graph: "Graph",
+    week: "Hafta",
+    month: "Mahina",
+    year: "Saal",
+    noMoodsLogged: "Abhi tak koi mood log nahi kiya gaya hai.",
+    logMoodsToSeeTrends: "Journaling ke baad apna mood log karein aur yahan apne trends dekhein.",
+    happy: "Khush",
+    neutral: "Normal",
+    sad: "Dukhi",
+    stressed: "Tanaav mein",
+    lightMode: "Light Mode",
+    darkMode: "Dark Mode",
   },
   hi: {
     // Onboarding
@@ -613,6 +682,10 @@ export const translations = {
     spouse: "जीवनसाथी",
     sibling: "भाई/बहन",
     selectRelation: "रिश्ता चुनें",
+    updateYourInfo: "अपनी जानकारी अपडेट करें",
+    saveChanges: "बदलाव सहेजें",
+    edit: "संपादित करें",
+    cancel: "रद्द करें",
     
     // Welcome
     yourMindsFriend: "आपके मन का मित्र — गोपनीय। सहायक। गैर-निर्णयात्मक।",
@@ -629,7 +702,7 @@ export const translations = {
     initialChatMessage: "नमस्ते! मैं मन मित्र हूँ, आपके मन का दोस्त। यहाँ आने के लिए धन्यवाद। आज आपके मन में क्या है? आप जितना चाहें उतना या कम साझा करने के लिए स्वतंत्र महसूस करें। 💙",
     listening: "सुन रहा हूँ...",
     thinking: "सोच रहा हूँ...",
-    yourProfile: "आपकी जानकारी",
+    yourInfo: "आपकी जानकारी",
     name: "नाम",
     noProfileInfo: "कोई प्रोफ़ाइल जानकारी नहीं मिली।",
     clearDataAndReset: "डेटा साफ़ करें और ऐप रीसेट करें",
@@ -677,7 +750,10 @@ export const translations = {
     confirm: "पुष्टि करें?",
     greatJobJournaling: "बहुत अच्छा जर्नलिंग ✨ लिखने से तनाव 30% कम होता है।",
     reflectionOn: "इस पर चिंतन ",
-
+    howAreYouFeeling: "आप अभी कैसा महसूस कर रहे हैं?",
+    addANote: "एक नोट जोड़ें... (वैकल्पिक)",
+    saveMood: "मूड सहेजें",
+    
     // Breathing
     takeADeepBreath: "एक गहरी साँस लें 🌿",
     breathingExerciseDescription: "अपने मन को शांत करने, फिर से ध्यान केंद्रित करने और रिचार्ज करने के लिए इस सरल बॉक्स ब्रीदिंग व्यायाम का पालन करें।",
@@ -703,6 +779,23 @@ export const translations = {
     helplineAasraDesc: "24x7, संकट में लोगों के लिए गोपनीय समर्थन।",
     helplineIcall: "iCALL साइकोसोशल हेल्पलाइन (TISS)",
     helplineIcallDesc: "सोम-शनि, सुबह 8 बजे से रात 10 बजे तक। पेशेवर परामर्श।",
+
+    // Trends
+    trends: "रुझान",
+    moodTrends: "मनोदशा के रुझान",
+    calendar: "कैलेंडर",
+    graph: "ग्राफ़",
+    week: "सप्ताह",
+    month: "महीना",
+    year: "वर्ष",
+    noMoodsLogged: "अभी तक कोई मनोदशा लॉग नहीं की गई है।",
+    logMoodsToSeeTrends: "अपने रुझानों को यहाँ देखने के लिए जर्नलिंग के बाद अपनी मनोदशा लॉग करें।",
+    happy: "खुश",
+    neutral: "तटस्थ",
+    sad: "उदास",
+    stressed: "तनावग्रस्त",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
   },
   mr: {
     // Onboarding
@@ -738,6 +831,10 @@ export const translations = {
     spouse: "जोडीदार",
     sibling: "भावंड",
     selectRelation: "नाते निवडा",
+    updateYourInfo: "तुमची माहिती अपडेट करा",
+    saveChanges: "बदल जतन करा",
+    edit: "संपादित करा",
+    cancel: "रद्द करा",
 
     // Welcome
     yourMindsFriend: "तुमच्या मनाचा मित्र — गोपनीय. आश्वासक. निःपक्षपाती.",
@@ -754,7 +851,7 @@ export const translations = {
     initialChatMessage: "नमस्कार! मी मन मित्र आहे, तुमच्या मनाचा मित्र. येथे आल्याबद्दल धन्यवाद. आज तुमच्या मनात काय आहे? तुम्हाला पाहिजे तितके कमी-जास्त शेअर करा. 💙",
     listening: "ऐकत आहे...",
     thinking: "विचार करत आहे...",
-    yourProfile: "तुमची माहिती",
+    yourInfo: "तुमची माहिती",
     name: "नाव",
     noProfileInfo: "प्रोफाइल माहिती आढळली नाही.",
     clearDataAndReset: "डेटा साफ करा आणि ॲप रीसेट करा",
@@ -802,6 +899,9 @@ export const translations = {
     confirm: "पुष्टी?",
     greatJobJournaling: "छान जर्नलिंग ✨ लिहिण्यामुळे तणाव 30% कमी होतो.",
     reflectionOn: "यावर चिंतन ",
+    howAreYouFeeling: "तुम्हाला आता कसे वाटत आहे?",
+    addANote: "एक टीप जोडा... (पर्यायी)",
+    saveMood: "मूड सेव्ह करा",
     
     // Breathing
     takeADeepBreath: "एक दीर्घ श्वास घ्या 🌿",
@@ -828,6 +928,23 @@ export const translations = {
     helplineAasraDesc: "संकटात असलेल्यांसाठी गोपनीय समर्थन.",
     helplineIcall: "iCALL सायकोसोशल हेल्पलाइन (TISS)",
     helplineIcallDesc: "सोम-शनि, सकाळी ८ ते रात्री १०. व्यावसायिक समुपदेशन.",
+
+    // Trends
+    trends: "ट्रेंड्स",
+    moodTrends: "मूड ट्रेंड्स",
+    calendar: "कॅलेंडर",
+    graph: "ग्राफ",
+    week: "आठवडा",
+    month: "महिना",
+    year: "वर्ष",
+    noMoodsLogged: "अद्याप कोणताही मूड लॉग केलेला नाही.",
+    logMoodsToSeeTrends: "तुमचे ट्रेंड येथे पाहण्यासाठी जर्नलिंगनंतर तुमचा मूड लॉग करा.",
+    happy: "आनंदी",
+    neutral: "स्थिर",
+    sad: "दुःखी",
+    stressed: "तणावग्रस्त",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
   },
   gu: {
     // Onboarding
@@ -835,7 +952,7 @@ export const translations = {
     letsGetToKnowYou: "ચાલો તમને થોડું જાણીએ. આ તમારા ઉપકરણ પર રહે છે અને તમારા અનુભવને વ્યક્તિગત કરવામાં મદદ કરે છે.",
     whatShouldICallYou: "મારે તમને શું કહેવું જોઈએ?",
     yourName: "તમારું નામ",
-    gender: "લિંગ",
+    gender: "ਲਿੰਗ",
     selectYourGender: "તમારું લિંગ પસંદ કરો",
     male: "પુરુષ",
     female: "મહિલા",
@@ -863,6 +980,10 @@ export const translations = {
     spouse: "જીવનસાથી",
     sibling: "ભાઈ-બહેન",
     selectRelation: "સંબંધ પસંદ કરો",
+    updateYourInfo: "તમારી માહિતી અપડેટ કરો",
+    saveChanges: "ફેરફારો સાચવો",
+    edit: "સંપાદિત કરો",
+    cancel: "રદ કરો",
 
     // Welcome
     yourMindsFriend: "તમારા મનનો મિત્ર — ગોપનીય. સહાયક. બિન-જજમેન્ટલ.",
@@ -879,7 +1000,7 @@ export const translations = {
     initialChatMessage: "નમસ્તે! હું મન મિત્ર છું, તમારા મનનો મિત્ર. અહીં આવવા બદલ આભાર. આજે તમારા મનમાં શું છે? તમે ઇચ્છો તેટલું વધુ કે ઓછું શેર કરવા માટે નિઃસંકોચ રહો. 💙",
     listening: "સાંભળી રહ્યો છું...",
     thinking: "વિચારી રહ્યો છું...",
-    yourProfile: "તમારી માહિતી",
+    yourInfo: "તમારી માહિતી",
     name: "નામ",
     noProfileInfo: "કોઈ પ્રોફાઇલ માહિતી મળી નથી.",
     clearDataAndReset: "ડેટા સાફ કરો અને એપ્લિકેશન રીસેટ કરો",
@@ -901,12 +1022,12 @@ export const translations = {
     maleVoice: "પુરુષ અવાજ",
     aQuickThought: "એક ઝડપી વિચાર",
     chatReflection: "ચેટ પ્રતિબિંબ",
-    generateTitlePrompt: `વપરાશકર્તા અને AI સુખાકારી સાથી વચ્ચેની નીચેની ચેટ વાંચો. મુખ્ય લાગણી અથવા વિષયને કેપ્ચર કરતું ટૂંકું, સૌમ્ય શીર્ષક (મહત્તમ 5 શબ્દો) બનાવો. ઉદાહરણો: "કામ પર ભરાઈ ગયેલું અનુભવવું," "મિત્રતા પર પ્રતિબિંબ," "ઉદાસીની એક ક્ષણ." અવતરણ ચિહ્નોનો ઉપયોગ કરશો નહીં.\n\nવાતચીત:\n`,
+    generateTitlePrompt: `વપરાશકર્તા અને AI સુખાકારી સાથી વચ્ચેની નીચેની ચેટ વાંચો. મુખ્ય લાગણી અથવા વિષયને કેપ્ચર કરતું ટૂંકું, સૌમ્ય શીર્ષક (મહત્તમ 5 શબ્દો) બનાવો. ઉદાહરણો: "કામ પર ભરાઈ ગયેલું અનુભવવું," "મિત્રતા પર પ્રતિબિંબ," "ઉદાસੀની એક ક્ષણ." અવતરણ ચિહ્નોનો ઉપયોગ કરશો નહીં.\n\nવાતચીત:\n`,
     voicePreview: "નમસ્તે, આ પસંદ કરેલ અવાજ છે.",
     voiceErrorGeneric: "માફ કરશો, વૉઇસ ઇનપુટ નિષ્ફળ થયું. કૃપા કરીને ફરી પ્રયાસ કરો.",
     voiceErrorNoSpeech: "મેં તે સાંભળ્યું નથી. કૃપા કરીને ફરીથી બોલવાનો પ્રયાસ કરો.",
     voiceErrorNotAllowed: "વૉઇસ ઇનપુટ માટે માઇક્રોફોન ઍક્સેસની જરૂર છે.",
-    crisisWarningTitle: "તમે સંકટમાં છો એવું લાગે છે.",
+    crisisWarningTitle: "તમે સંકਟમાં છો એવું લાગે છે.",
     crisisWarningBody: "જ્યારે તમે આવું અનુભવો ત્યારે સંપર્ક કરવો મહત્વપૂર્ણ છે. તમારા કટોકટી સંપર્કો નીચે છે. કૃપા કરીને તેમાંથી કોઈ એક સાથે વાત કરવાનો અથવા મદદ વિભાગની મુલાકાત લેવાનો વિચાર કરો.",
     callNow: "હવે કૉલ કરો",
     close: "બંધ કરો",
@@ -925,8 +1046,11 @@ export const translations = {
     deleteEntry: "એન્ટ્રી કાઢી નાખો",
     confirmDeletion: "કાઢી નાખવાની પુષ્ટિ કરો",
     confirm: "ખાતરી કરો?",
-    greatJobJournaling: "ઉત્તમ જર્નલિંગ ✨ લખવાથી તણાવ 30% ઘટે છે.",
+    greatJobJournaling: "ઉત્તમ જર્નਲિંગ ✨ લખવાથી તણાવ 30% ઘટે છે.",
     reflectionOn: "પર પ્રતિબિંબ ",
+    howAreYouFeeling: "તમે અત્યારે કેવું અનુભવો છો?",
+    addANote: "એક નોંધ ઉમેરો... (વૈકલ્પિક)",
+    saveMood: "મૂડ સાચવો",
     
     // Breathing
     takeADeepBreath: "એક ઊંડો શ્વાસ લો 🌿",
@@ -953,6 +1077,23 @@ export const translations = {
     helplineAasraDesc: "24x7, તકલીફમાં રહેલા લોકો માટે ગોપનીય સમર્થન.",
     helplineIcall: "iCALL સાયકોસોશિયલ હેલ્પલાઇન (TISS)",
     helplineIcallDesc: "સોમ-શનિ, સવારે 8 થી રાત્રે 10. વ્યાવસાયિક પરામર્શ.",
+    
+    // Trends
+    trends: "ટ્રેન્ડ્સ",
+    moodTrends: "મૂડ ટ્રેન્ડ્સ",
+    calendar: "કેલેન્ડર",
+    graph: "ગ્રાફ",
+    week: "અઠવાડયું",
+    month: "મહિનો",
+    year: "વર્ષ",
+    noMoodsLogged: "હજી સુધી કોઈ મૂડ લોગ થયો નથી.",
+    logMoodsToSeeTrends: "તમારા ટ્રેન્ડ્સ અહીં જોવા માટે જર્નલિંગ પછી તમારો મૂડ લોગ કરો.",
+    happy: "ખુશ",
+    neutral: "સામાન્ય",
+    sad: "દુઃખી",
+    stressed: "તણાવગ્રસ્ત",
+    lightMode: "લાઇટ મોડ",
+    darkMode: "ડાર્ક મોડ",
   },
   ra: {
     // Onboarding
@@ -988,6 +1129,10 @@ export const translations = {
     spouse: "जीवनसाथी",
     sibling: "भाई/बहन",
     selectRelation: "रिश्तो चुणो",
+    updateYourInfo: "आपरी जानकारी अपडेट करो",
+    saveChanges: "बदलाव सहेजो",
+    edit: "संपादित करो",
+    cancel: "रद्द करो",
 
     // Welcome
     yourMindsFriend: "आपरे मन रो मित्र — गोपनीय। सहायक। बिना भेदभाव रो।",
@@ -1004,7 +1149,7 @@ export const translations = {
     initialChatMessage: "राम राम! म्हूँ मन मित्र, आपरै मन रो दोस्त। पधारवा सारू धन्यवाद। आज आपरै मन में कांई है? आप जितणौ चावो, बितणौ बता सको हो। 💙",
     listening: "सुण रियो हूँ...",
     thinking: "सोच रियो हूँ...",
-    yourProfile: "आपरी जानकारी",
+    yourInfo: "आपरी जानकारी",
     name: "नाम",
     noProfileInfo: "कोई प्रोफ़ाइल जानकारी नीं मिली।",
     clearDataAndReset: "डेटा साफ करो अर ऐप नै रीसेट करो",
@@ -1052,7 +1197,10 @@ export const translations = {
     confirm: "पੱਕो?",
     greatJobJournaling: "डायरी लिख'र घणौ अच्छो काम कियो ✨ लिखवा सूं तनाव 30% कम व्है जावै।",
     reflectionOn: "माथै चिंतन ",
-    
+    howAreYouFeeling: "आप अबार कियां महसूस कर रह्या हो?",
+    addANote: "एक नोट जोड़ो... (वैकल्पिक)",
+    saveMood: "मूड सहेजो",
+
     // Breathing
     takeADeepBreath: "एक ऊंडो स्वास लो 🌿",
     breathingExerciseDescription: "आपरै मन नै आराम देवण, फेरूं ध्यान लगावण, अर रिचार्ज करण सारू इण सरल बॉक्स ब्रीदिंग व्यायाम नै करो।",
@@ -1078,6 +1226,23 @@ export const translations = {
     helplineAasraDesc: "24x7, परेशान लोगां सारू गोपनीय सहायता।",
     helplineIcall: "iCALL साइकोसोशल हेल्पलाइन (TISS)",
     helplineIcallDesc: "सोम-शनि, सुबह 8 सूं रात 10 बजे तक। पेशेवर परामर्श।",
+    
+    // Trends
+    trends: "रुझान",
+    moodTrends: "मनोदशा रा रुझान",
+    calendar: "कैलेंडर",
+    graph: "ग्राफ",
+    week: "हफ्तो",
+    month: "महिनो",
+    year: "साल",
+    noMoodsLogged: "अबार तक कोई मनोदशा लॉग नीं करी गई है।",
+    logMoodsToSeeTrends: "आपरा रुझान अठै देखवा सारू जर्नलिंग रै बाद आपरी मनोदशा लॉग करो।",
+    happy: "खुश",
+    neutral: "सामान्य",
+    sad: "उदास",
+    stressed: "तनाव में",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
   },
   hr: {
     // Onboarding
@@ -1113,6 +1278,10 @@ export const translations = {
     spouse: "घरवाला/घरवाली",
     sibling: "भाई/बहन",
     selectRelation: "रिश्ता चुण",
+    updateYourInfo: "तेरी जानकारी अपडेट कर",
+    saveChanges: "बदलाव बचा ले",
+    edit: "संपादित कर",
+    cancel: "रद्द कर",
 
     // Welcome
     yourMindsFriend: "तेरे मन का दोस्त — गोपनीय। सहायक। बिना भेदभाव का।",
@@ -1129,7 +1298,7 @@ export const translations = {
     initialChatMessage: "राम-राम! मैं मन मित्र, तेरे मन का दोस्त। आण खातर धन्यवाद। आज तेरे मन में के सै? तू जितना चाहवै, उतना बता सकै सै। 💙",
     listening: "सुणण लाग रह्या हूँ...",
     thinking: "सोचण लाग रह्या हूँ...",
-    yourProfile: "तेरी जानकारी",
+    yourInfo: "तेरी जानकारी",
     name: "नाम",
     noProfileInfo: "कोई प्रोफ़ाइल जानकारी नी मिली।",
     clearDataAndReset: "डेटा साफ कर अर ऐप नै रीसेट कर",
@@ -1177,7 +1346,10 @@ export const translations = {
     confirm: "पक्का?",
     greatJobJournaling: "डायरी लिखकै घणा बढ़िया काम करया ✨ लिखण तै तनाव 30% कम हो जावै सै।",
     reflectionOn: "पै चिंतन ",
-    
+    howAreYouFeeling: "तू इब कैसा महसूस कर रह्या सै?",
+    addANote: "एक नोट जोड़... (वैकल्पिक)",
+    saveMood: "मूड बचा ले",
+
     // Breathing
     takeADeepBreath: "एक लंबा सांस ले 🌿",
     breathingExerciseDescription: "अपने मन नै आराम देण, फेर तै ध्यान लगाण, अर रिचार्ज करण खातर इस सरल बॉक्स ब्रीदिंग व्यायाम नै कर।",
@@ -1203,6 +1375,23 @@ export const translations = {
     helplineAasraDesc: "24x7, परेशान माणसां खातर गोपनीय सहायता।",
     helplineIcall: "iCALL साइकोसोशल हेल्पलाइन (TISS)",
     helplineIcallDesc: "सोम-शनि, सुबेरे 8 तै रात 10 बजे तक। पेशेवर परामर्श।",
+
+    // Trends
+    trends: "रुझान",
+    moodTrends: "मनोदशा के रुझान",
+    calendar: "कैलेंडर",
+    graph: "ग्राफ",
+    week: "हफ्ता",
+    month: "महीना",
+    year: "साल",
+    noMoodsLogged: "इब तक कोई मनोदशा लॉग नी करी गई सै।",
+    logMoodsToSeeTrends: "अपने रुझान अड़ै देखण खातर जर्नलिंग के बाद अपनी मनोदशा लॉग कर।",
+    happy: "खुश",
+    neutral: "सामान्य",
+    sad: "उदास",
+    stressed: "तनाव में",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
   },
   es: {
     // Onboarding
@@ -1238,6 +1427,10 @@ export const translations = {
     spouse: "Cónyuge",
     sibling: "Hermano/a",
     selectRelation: "Seleccionar Relación",
+    updateYourInfo: "Actualizar tu Información",
+    saveChanges: "Guardar Cambios",
+    edit: "Editar",
+    cancel: "Cancelar",
 
     // Welcome
     yourMindsFriend: "El Amigo de Tu Mente — Confidencial. De Apoyo. Sin Juicios.",
@@ -1254,7 +1447,7 @@ export const translations = {
     initialChatMessage: "¡Hola! Soy Mann Mitra, el amigo de tu mente. Gracias por pasarte. ¿Qué tienes en mente hoy? Siéntete libre de compartir tanto o tan poco como quieras. 💙",
     listening: "Escuchando...",
     thinking: "Pensando...",
-    yourProfile: "Tu Información",
+    yourInfo: "Tu Información",
     name: "Nombre",
     noProfileInfo: "No se encontró información del perfil.",
     clearDataAndReset: "Borrar Datos y Reiniciar App",
@@ -1302,7 +1495,10 @@ export const translations = {
     confirm: "¿Confirmar?",
     greatJobJournaling: "¡Gran trabajo escribiendo! ✨ Escribir reduce el estrés en un 30%.",
     reflectionOn: "Reflexión sobre ",
-    
+    howAreYouFeeling: "¿Cómo te sientes ahora mismo?",
+    addANote: "Añade una nota... (opcional)",
+    saveMood: "Guardar Estado de Ánimo",
+
     // Breathing
     takeADeepBreath: "Respira Profundamente 🌿",
     breathingExerciseDescription: "Sigue este sencillo ejercicio de respiración cuadrada para relajarte, reenfocarte y recargar tu mente.",
@@ -1328,6 +1524,23 @@ export const translations = {
     helplineAasraDesc: "24x7, apoyo confidencial para quienes están en apuros.",
     helplineIcall: "Línea de Ayuda Psicosocial iCALL (TISS)",
     helplineIcallDesc: "Lun–Sáb, 8am–10pm. Asesoramiento profesional.",
+    
+    // Trends
+    trends: "Tendencias",
+    moodTrends: "Tendencias de Ánimo",
+    calendar: "Calendario",
+    graph: "Gráfico",
+    week: "Semana",
+    month: "Mes",
+    year: "Año",
+    noMoodsLogged: "Aún no se han registrado estados de ánimo.",
+    logMoodsToSeeTrends: "Registra tu estado de ánimo después de escribir en el diario para ver tus tendencias aquí.",
+    happy: "Feliz",
+    neutral: "Neutral",
+    sad: "Triste",
+    stressed: "Estresado",
+    lightMode: "Modo Claro",
+    darkMode: "Modo Oscuro",
   },
   zh: {
     // Onboarding
@@ -1363,6 +1576,10 @@ export const translations = {
     spouse: "配偶",
     sibling: "兄弟姐妹",
     selectRelation: "选择关系",
+    updateYourInfo: "更新您的信息",
+    saveChanges: "保存更改",
+    edit: "编辑",
+    cancel: "取消",
 
     // Welcome
     yourMindsFriend: "您心灵的朋友 — 保密。支持。不带评判。",
@@ -1379,7 +1596,7 @@ export const translations = {
     initialChatMessage: "嘿！我是 Mann Mitra，你心灵的朋友。谢谢你的到来。你今天在想些什么呢？你可以随心所欲地分享，或多或少都可以。💙",
     listening: "正在聆听...",
     thinking: "正在思考...",
-    yourProfile: "您的信息",
+    yourInfo: "您的信息",
     name: "姓名",
     noProfileInfo: "未找到个人资料信息。",
     clearDataAndReset: "清除数据并重置应用",
@@ -1427,6 +1644,9 @@ export const translations = {
     confirm: "确认？",
     greatJobJournaling: "写日记做得好 ✨ 写作能减少30%的压力。",
     reflectionOn: "关于 ",
+    howAreYouFeeling: "您现在感觉如何？",
+    addANote: "添加备注...（可选）",
+    saveMood: "保存心情",
     
     // Breathing
     takeADeepBreath: "深呼吸 🌿",
@@ -1453,6 +1673,23 @@ export const translations = {
     helplineAasraDesc: "24x7，为处于困境中的人提供保密支持。",
     helplineIcall: "iCALL 心理社会帮助热线 (TISS)",
     helplineIcallDesc: "周一至周六，上午8点至晚上10点。专业咨询。",
+
+    // Trends
+    trends: "趋势",
+    moodTrends: "情绪趋势",
+    calendar: "日历",
+    graph: "图表",
+    week: "周",
+    month: "月",
+    year: "年",
+    noMoodsLogged: "尚未记录任何情绪。",
+    logMoodsToSeeTrends: "在写日记后记录您的情绪，以在此处查看您的趋势。",
+    happy: "开心",
+    neutral: "一般",
+    sad: "伤心",
+    stressed: "有压力",
+    lightMode: "浅色模式",
+    darkMode: "深色模式",
   },
   tr: {
     // Onboarding
@@ -1488,6 +1725,10 @@ export const translations = {
     spouse: "Eş",
     sibling: "Kardeş",
     selectRelation: "İlişki Seçin",
+    updateYourInfo: "Bilgilerinizi Güncelleyin",
+    saveChanges: "Değişiklikleri Kaydet",
+    edit: "Düzenle",
+    cancel: "İptal",
 
     // Welcome
     yourMindsFriend: "Zihninizin Dostu — Gizli. Destekleyici. Yargılamayan.",
@@ -1504,7 +1745,7 @@ export const translations = {
     initialChatMessage: "Merhaba! Ben Mann Mitra, zihninizin dostu. Uğradığınız için teşekkürler. Bugün aklınızda ne var? İstediğiniz kadar çok veya az paylaşmaktan çekinmeyin. 💙",
     listening: "Dinleniyor...",
     thinking: "Düşünülüyor...",
-    yourProfile: "Senin Bilgilerin",
+    yourInfo: "Senin Bilgilerin",
     name: "İsim",
     noProfileInfo: "Profil bilgisi bulunamadı.",
     clearDataAndReset: "Verileri Temizle ve Uygulamayı Sıfırla",
@@ -1552,6 +1793,9 @@ export const translations = {
     confirm: "Onayla?",
     greatJobJournaling: "Harika bir günlük tutma işi ✨ Yazmak stresi %30 azaltır.",
     reflectionOn: "Üzerine yansıma ",
+    howAreYouFeeling: "Şu anda nasıl hissediyorsunuz?",
+    addANote: "Bir not ekle... (isteğe bağlı)",
+    saveMood: "Ruh Halini Kaydet",
     
     // Breathing
     takeADeepBreath: "Derin Bir Nefes Alın 🌿",
@@ -1578,6 +1822,23 @@ export const translations = {
     helplineAasraDesc: "7/24, sıkıntı içindekiler için gizli destek.",
     helplineIcall: "iCALL Psikososyal Yardım Hattı (TISS)",
     helplineIcallDesc: "Pzt–Cmt, 08:00–22:00. Profesyonel danışmanlık.",
+
+    // Trends
+    trends: "Trendler",
+    moodTrends: "Ruh Hali Trendleri",
+    calendar: "Takvim",
+    graph: "Grafik",
+    week: "Hafta",
+    month: "Ay",
+    year: "Yıl",
+    noMoodsLogged: "Henüz ruh hali kaydedilmedi.",
+    logMoodsToSeeTrends: "Trendlerinizi burada görmek için günlük tuttuktan sonra ruh halinizi kaydedin.",
+    happy: "Mutlu",
+    neutral: "Nötr",
+    sad: "Üzgün",
+    stressed: "Stresli",
+    lightMode: "Açık Mod",
+    darkMode: "Karanlık Mod",
   },
   de: {
     // Onboarding
@@ -1613,6 +1874,10 @@ export const translations = {
     spouse: "Ehepartner/in",
     sibling: "Geschwister",
     selectRelation: "Beziehung auswählen",
+    updateYourInfo: "Ihre Informationen aktualisieren",
+    saveChanges: "Änderungen speichern",
+    edit: "Bearbeiten",
+    cancel: "Abbrechen",
 
     // Welcome
     yourMindsFriend: "Der Freund Ihres Geistes — Vertraulich. Unterstützend. Nicht wertend.",
@@ -1629,7 +1894,7 @@ export const translations = {
     initialChatMessage: "Hallo! Ich bin Mann Mitra, der Freund deines Geistes. Danke, dass du vorbeischaust. Was beschäftigt dich heute? Fühl dich frei, so viel oder so wenig zu teilen, wie du möchtest. 💙",
     listening: "Höre zu...",
     thinking: "Denke nach...",
-    yourProfile: "Deine Infos",
+    yourInfo: "Deine Infos",
     name: "Name",
     noProfileInfo: "Keine Profilinformationen gefunden.",
     clearDataAndReset: "Daten löschen & App zurücksetzen",
@@ -1677,7 +1942,10 @@ export const translations = {
     confirm: "Bestätigen?",
     greatJobJournaling: "Gut gemacht beim Tagebuchschreiben ✨ Schreiben reduziert Stress um 30%.",
     reflectionOn: "Reflexion über ",
-    
+    howAreYouFeeling: "Wie fühlen Sie sich gerade?",
+    addANote: "Notiz hinzufügen... (optional)",
+    saveMood: "Stimmung speichern",
+
     // Breathing
     takeADeepBreath: "Tief durchatmen 🌿",
     breathingExerciseDescription: "Folgen Sie dieser einfachen Box-Atmungsübung, um sich zu entspannen, neu zu fokussieren und Ihren Geist aufzuladen.",
@@ -1703,6 +1971,23 @@ export const translations = {
     helplineAasraDesc: "24x7, vertrauliche Unterstützung für Menschen in Not.",
     helplineIcall: "iCALL Psychosoziale Helpline (TISS)",
     helplineIcallDesc: "Mo–Sa, 8–22 Uhr. Professionelle Beratung.",
+
+    // Trends
+    trends: "Trends",
+    moodTrends: "Stimmungstrends",
+    calendar: "Kalender",
+    graph: "Grafik",
+    week: "Woche",
+    month: "Monat",
+    year: "Jahr",
+    noMoodsLogged: "Noch keine Stimmungen protokolliert.",
+    logMoodsToSeeTrends: "Protokollieren Sie Ihre Stimmung nach dem Tagebuchschreiben, um Ihre Trends hier zu sehen.",
+    happy: "Glücklich",
+    neutral: "Neutral",
+    sad: "Traurig",
+    stressed: "Gestresst",
+    lightMode: "Heller Modus",
+    darkMode: "Dunkler Modus",
   },
   ko: {
     // Onboarding
@@ -1738,6 +2023,10 @@ export const translations = {
     spouse: "배우자",
     sibling: "형제자매",
     selectRelation: "관계 선택",
+    updateYourInfo: "정보 업데이트",
+    saveChanges: "변경 사항 저장",
+    edit: "편집",
+    cancel: "취소",
 
     // Welcome
     yourMindsFriend: "당신 마음의 친구 — 비밀 보장. 지지. 비판단적.",
@@ -1754,7 +2043,7 @@ export const translations = {
     initialChatMessage: "안녕하세요! 저는 당신의 마음 친구, 만 미트라입니다. 들러주셔서 감사합니다. 오늘 무슨 생각을 하고 계신가요? 원하는 만큼 많이 또는 적게 자유롭게 공유해주세요. 💙",
     listening: "듣는 중...",
     thinking: "생각 중...",
-    yourProfile: "내 정보",
+    yourInfo: "내 정보",
     name: "이름",
     noProfileInfo: "프로필 정보가 없습니다.",
     clearDataAndReset: "데이터 지우기 및 앱 재설정",
@@ -1802,7 +2091,10 @@ export const translations = {
     confirm: "확인하시겠습니까?",
     greatJobJournaling: "일기 쓰기 잘하셨어요 ✨ 글쓰기는 스트레스를 30% 줄여줍니다.",
     reflectionOn: "에 대한 성찰 ",
-    
+    howAreYouFeeling: "지금 기분이 어떠세요?",
+    addANote: "메모 추가... (선택 사항)",
+    saveMood: "기분 저장",
+
     // Breathing
     takeADeepBreath: "심호흡하세요 🌿",
     breathingExerciseDescription: "이 간단한 상자 호흡 운동을 따라 마음을 편안하게 하고, 다시 집중하고, 재충전하세요.",
@@ -1828,11 +2120,28 @@ export const translations = {
     helplineAasraDesc: "24시간 연중무휴, 고통받는 사람들을 위한 비밀 지원.",
     helplineIcall: "iCALL 심리사회적 헬프라인 (TISS)",
     helplineIcallDesc: "월–토, 오전 8시–오후 10시. 전문 상담.",
+
+    // Trends
+    trends: "트렌드",
+    moodTrends: "기분 트렌드",
+    calendar: "캘린더",
+    graph: "그래프",
+    week: "주",
+    month: "월",
+    year: "년",
+    noMoodsLogged: "아직 기록된 기분이 없습니다.",
+    logMoodsToSeeTrends: "일기를 작성한 후 기분을 기록하여 여기에서 트렌드를 확인하세요.",
+    happy: "행복함",
+    neutral: "보통",
+    sad: "슬픔",
+    stressed: "스트레스",
+    lightMode: "라이트 모드",
+    darkMode: "다크 모드",
   },
   ur: {
     // Onboarding
     welcomeToMannMitra: "من مترا میں خوش آمدید 💙",
-    letsGetToKnowYou: "آئیے آپ کو تھوڑا جانتے ہیں۔ یہ آپ کے آلہ پر رہتا ہے اور آپ کے تجربے کو ذاتی بنانے میں مدد کرتا ہے۔",
+    letsGetToKnowYou: "آئیے آپ کو تھوڑا جانتے ہیں۔ यह آپ کے آلہ پر رہتا ہے اور آپ کے تجربے کو ذاتی बनाने میں مدد کرتا ہے۔",
     whatShouldICallYou: "میں آپ کو کیا کہہ کر بلاؤں؟",
     yourName: "آپ کا نام",
     gender: "جنس",
@@ -1840,7 +2149,7 @@ export const translations = {
     male: "مرد",
     female: "عورت",
     other: "دیگر",
-    preferNotToSay: "بتانا نہیں چاہتے",
+    preferNotToSay: "بتانا نہیں चाहते",
     dateOfBirth: "تاریخ پیدائش",
     country: "ملک",
     selectYourCountry: "اپنا ملک منتخب کریں",
@@ -1850,7 +2159,7 @@ export const translations = {
     couldNotSaveDetails: "آپ کی تفصیلات محفوظ نہیں ہو سکیں۔ براہ کرم یقینی بنائیں کہ آپ کا براؤزر مقامی اسٹوریج کو سپورٹ کرتا ہے۔",
     saveAndContinue: "محفوظ کریں اور جاری رکھیں",
     emergencyContacts: "ہنگامی رابطے",
-    emergencyContactsDescription: "کم از کم ایک شخص شامل کریں جسے ہم بحران کا پتہ لگانے پر رابطہ کرنے کا مشورہ دے سکتے ہیں۔ یہ آپ کے آلے پر رہتا ہے۔",
+    emergencyContactsDescription: "کم از کم ایک شخص شامل کریں جسے ہم بحران کا پتہ لگانے پر رابطہ کرنے کا مشورہ دے سکتے ہیں۔ यह آپ کے آلے پر رہتا ہے۔",
     relation: "رشتہ",
     phoneNumber: "فون نمبر",
     addContact: "+ رابطہ شامل کریں",
@@ -1863,6 +2172,10 @@ export const translations = {
     spouse: "شریک حیات",
     sibling: "بہن/بھائی",
     selectRelation: "رشتہ منتخب کریں",
+    updateYourInfo: "اپنی معلومات کو اپ ڈیٹ کریں",
+    saveChanges: "تبدیلیاں محفوظ کریں",
+    edit: "ترمیم کریں",
+    cancel: "منسوخ کریں",
 
     // Welcome
     yourMindsFriend: "آپ کے ذہن کا دوست — خفیہ۔ معاون۔ غیر فیصلہ کن۔",
@@ -1879,7 +2192,7 @@ export const translations = {
     initialChatMessage: "ہیلو! میں من مترا ہوں، آپ کے دماغ کا دوست۔ تشریف لانے کا شکریہ۔ آج آپ کے دماغ میں کیا ہے؟ آپ جتنا چاہیں کم یا زیادہ شیئر کرنے کے لئے آزاد محسوس کریں۔ 💙",
     listening: "سن رہا ہوں...",
     thinking: "سوچ رہا ہوں...",
-    yourProfile: "آپ کی معلومات",
+    yourInfo: "آپ کی معلومات",
     name: "نام",
     noProfileInfo: "کوئی پروفائل معلومات نہیں ملی۔",
     clearDataAndReset: "ڈیٹا صاف کریں اور ایپ ری سیٹ کریں",
@@ -1907,14 +2220,14 @@ export const translations = {
     voiceErrorNoSpeech: "میں نے وہ نہیں سنا۔ براہ کرم دوبارہ بولنے کی کوشش کریں۔",
     voiceErrorNotAllowed: "صوتی ان پٹ کے لیے مائیکروفون تک رسائی درکار ہے۔",
     crisisWarningTitle: "ایسا لگتا ہے کہ آپ پریشانی میں ہیں۔",
-    crisisWarningBody: "جب آپ ایسا محسوس کر رہے ہوں تو کسی سے رابطہ کرنا ضروری ہے۔ آپ کے ہنگامی رابطے نیچے ہیں۔ براہ کرم ان میں سے کسی ایک سے بات کرنے یا مدد کے سیکشن میں جانے پر غور کریں۔",
+    crisisWarningBody: "جب آپ ایسا محسوس کر रहे ہوں تو کسی سے رابطہ کرنا ضروری ہے۔ آپ کے ہنگامی رابطے نیچے ہیں۔ براہ کرم ان میں سے کسی ایک سے بات کرنے یا مدد کے سیکشن میں جانے پر غور کریں۔",
     callNow: "ابھی کال کریں",
     close: "بند کریں",
     
     // Journal
     yourSafeSpace: "آپ کی محفوظ جگہ ✨",
     giveYourReflectionTitle: "اپنے غور و فکر کو ایک عنوان دیں۔۔۔",
-    writeDownYourThoughts: "اپنے خیالات، احساسات، یا جو کچھ بھی آپ کے ذہن میں ہے اسے لکھیں۔ یہ آپ کا نجی کونا ہے 💛",
+    writeDownYourThoughts: "اپنے خیالات، احساسات، یا جو کچھ بھی آپ کے ذہن میں ہے اسے لکھیں۔ यह آپ کا نجی کونا ہے 💛",
     saveMyReflection: "میرا غور و فکر محفوظ کریں 📝",
     backToChat: "← چیٹ پر واپس جائیں",
     yourReflections: "آپ کے غور و فکر ❤️",
@@ -1927,7 +2240,10 @@ export const translations = {
     confirm: "تصدیق کریں؟",
     greatJobJournaling: "جرنلنگ کا بہترین کام ✨ لکھنے سے تناؤ 30 فیصد کم ہوتا ہے۔",
     reflectionOn: "پر غور و فکر ",
-    
+    howAreYouFeeling: "آپ ابھی کیسا محسوس کر رہے ہیں؟",
+    addANote: "ایک نوٹ شامل کریں... (اختیاری)",
+    saveMood: "موڈ محفوظ کریں",
+
     // Breathing
     takeADeepBreath: "ایک گہری سانس لیں 🌿",
     breathingExerciseDescription: "آرام کرنے، دوبارہ توجہ مرکوز کرنے اور اپنے دماغ کو ریچارج کرنے کے لیے اس سادہ باکس سانس لینے کی مشق پر عمل کریں۔",
@@ -1953,6 +2269,23 @@ export const translations = {
     helplineAasraDesc: "24x7، پریشانی میں مبتلا افراد کے لیے خفیہ مدد۔",
     helplineIcall: "آئی کال سائیکو سوشل ہیلپ لائن (TISS)",
     helplineIcallDesc: "پیر-ہفتہ، صبح 8 بجے سے رات 10 بجے تک۔ پیشہ ورانہ مشاورت۔",
+    
+    // Trends
+    trends: "رجحانات",
+    moodTrends: "موڈ کے رجحانات",
+    calendar: "کیلنڈر",
+    graph: "گراف",
+    week: "ہفتہ",
+    month: "مہینہ",
+    year: "سال",
+    noMoodsLogged: "ابھی تک کوئی موڈ لاگ نہیں ہوا۔",
+    logMoodsToSeeTrends: "اپنے رجحانات کو یہاں دیکھنے کے لیے جرنلنگ کے بعد اپنا موڈ لاگ کریں۔",
+    happy: "خوش",
+    neutral: "غیر جانبدار",
+    sad: "اداس",
+    stressed: "پریشان",
+    lightMode: "لائٹ موڈ",
+    darkMode: "ڈارک موڈ",
   },
   ar: {
     // Onboarding
@@ -1988,6 +2321,10 @@ export const translations = {
     spouse: "زوج/زوجة",
     sibling: "أخ/أخت",
     selectRelation: "اختر العلاقة",
+    updateYourInfo: "تحديث معلوماتك",
+    saveChanges: "حفظ التغييرات",
+    edit: "تعديل",
+    cancel: "إلغاء",
 
     // Welcome
     yourMindsFriend: "صديق عقلك — سري. داعم. غير قضائي.",
@@ -2004,7 +2341,7 @@ export const translations = {
     initialChatMessage: "مرحباً! أنا مان ميترا، صديق عقلك. شكراً لزيارتك. ما الذي يدور في ذهنك اليوم؟ لا تتردد في مشاركة الكثير أو القليل كما تريد. 💙",
     listening: "أستمع...",
     thinking: "أفكر...",
-    yourProfile: "معلوماتك",
+    yourInfo: "معلوماتك",
     name: "الاسم",
     noProfileInfo: "لم يتم العثور على معلومات الملف الشخصي.",
     clearDataAndReset: "مسح البيانات وإعادة ضبط التطبيق",
@@ -2052,7 +2389,10 @@ export const translations = {
     confirm: "تأكيد؟",
     greatJobJournaling: "عمل رائع في تدوين اليوميات ✨ الكتابة تقلل من التوتر بنسبة 30٪.",
     reflectionOn: "تأمل في ",
-    
+    howAreYouFeeling: "كيف تشعر الآن؟",
+    addANote: "أضف ملاحظة... (اختياري)",
+    saveMood: "حفظ الحالة المزاجية",
+
     // Breathing
     takeADeepBreath: "خذ نفسًا عميقًا 🌿",
     breathingExerciseDescription: "اتبع تمرين التنفس الصندوقي البسيط هذا للاسترخاء وإعادة التركيز وتجديد طاقتك.",
@@ -2078,6 +2418,23 @@ export const translations = {
     helplineAasraDesc: "24/7، دعم سري للمحتاجين.",
     helplineIcall: "خط المساعدة النفسي الاجتماعي iCALL (TISS)",
     helplineIcallDesc: "من الإثنين إلى السبت، من 8 صباحًا حتى 10 مساءً. استشارات متخصصة.",
+
+    // Trends
+    trends: "الاتجاهات",
+    moodTrends: "اتجاهات المزاج",
+    calendar: "التقويم",
+    graph: "الرسم البياني",
+    week: "أسبوع",
+    month: "شهر",
+    year: "سنة",
+    noMoodsLogged: "لم يتم تسجيل أي حالات مزاجية بعد.",
+    logMoodsToSeeTrends: "سجل حالتك المزاجية بعد كتابة اليوميات لترى اتجاهاتك هنا.",
+    happy: "سعيد",
+    neutral: "محايد",
+    sad: "حزين",
+    stressed: "متوتر",
+    lightMode: "الوضع الفاتح",
+    darkMode: "الوضع الداكن",
   },
   fr: {
     // Onboarding
@@ -2113,6 +2470,10 @@ export const translations = {
     spouse: "Conjoint(e)",
     sibling: "Frère/Sœur",
     selectRelation: "Sélectionner le lien",
+    updateYourInfo: "Mettre à jour vos informations",
+    saveChanges: "Enregistrer les modifications",
+    edit: "Modifier",
+    cancel: "Annuler",
   
     // Welcome
     yourMindsFriend: "L'ami de votre esprit — Confidentiel. Solidaire. Sans jugement.",
@@ -2129,7 +2490,7 @@ export const translations = {
     initialChatMessage: "Salut ! Je suis Mann Mitra, l'ami de votre esprit. Merci de votre visite. À quoi pensez-vous aujourd'hui ? N'hésitez pas à partager autant ou aussi peu que vous le souhaitez. 💙",
     listening: "Écoute en cours...",
     thinking: "Réflexion en cours...",
-    yourProfile: "Vos informations",
+    yourInfo: "Vos informations",
     name: "Nom",
     noProfileInfo: "Aucune information de profil trouvée.",
     clearDataAndReset: "Effacer les données et réinitialiser l'application",
@@ -2177,7 +2538,10 @@ export const translations = {
     confirm: "Confirmer ?",
     greatJobJournaling: "Excellent travail de journalisation ✨ L'écriture réduit le stress de 30%.",
     reflectionOn: "Réflexion sur ",
-    
+    howAreYouFeeling: "Comment vous sentez-vous en ce moment ?",
+    addANote: "Ajouter une note... (facultatif)",
+    saveMood: "Enregistrer l'humeur",
+  
     // Breathing
     takeADeepBreath: "Prenez une profonde inspiration 🌿",
     breathingExerciseDescription: "Suivez cet exercice simple de respiration carrée pour vous détendre, vous recentrer et recharger votre esprit.",
@@ -2203,6 +2567,23 @@ export const translations = {
     helplineAasraDesc: "24h/24, 7j/7, soutien confidentiel pour les personnes en détresse.",
     helplineIcall: "Ligne d'assistance psychosociale iCALL (TISS)",
     helplineIcallDesc: "Lun–Sam, 8h–22h. Conseil professionnel.",
+
+    // Trends
+    trends: "Tendances",
+    moodTrends: "Tendances de l'humeur",
+    calendar: "Calendrier",
+    graph: "Graphique",
+    week: "Semaine",
+    month: "Mois",
+    year: "Année",
+    noMoodsLogged: "Aucune humeur enregistrée pour le moment.",
+    logMoodsToSeeTrends: "Enregistrez votre humeur après avoir écrit dans votre journal pour voir vos tendances ici.",
+    happy: "Heureux",
+    neutral: "Neutre",
+    sad: "Triste",
+    stressed: "Stressé",
+    lightMode: "Mode Clair",
+    darkMode: "Mode Sombre",
   },
   ta: {
     // Onboarding
@@ -2238,6 +2619,10 @@ export const translations = {
     spouse: "வாழ்க்கைத் துணை",
     sibling: "சகோதரன்/சகோதரி",
     selectRelation: "உறவைத் தேர்ந்தெடுக்கவும்",
+    updateYourInfo: "உங்கள் தகவலைப் புதுப்பிக்கவும்",
+    saveChanges: "மாற்றங்களைச் சேமிக்கவும்",
+    edit: "திருத்து",
+    cancel: "ரத்துசெய்",
 
     // Welcome
     yourMindsFriend: "உங்கள் மனதின் நண்பன் — ரகசியமானது. ஆதரவானது. தீர்ப்பு இல்லாதது.",
@@ -2254,7 +2639,7 @@ export const translations = {
     initialChatMessage: "வணக்கம்! நான் மன் மித்ரா, உங்கள் மனதின் நண்பன். வருகைக்கு நன்றி. இன்று உங்கள் மனதில் என்ன இருக்கிறது? நீங்கள் விரும்பும் அளவுக்கு அதிகமாகவோ அல்லது குறைவாகவோ பகிர்ந்து கொள்ள தயங்க வேண்டாம். 💙",
     listening: "கேட்கிறது...",
     thinking: "சிந்திக்கிறது...",
-    yourProfile: "உங்கள் தகவல்",
+    yourInfo: "உங்கள் தகவல்",
     name: "பெயர்",
     noProfileInfo: "சுயவிவரத் தகவல் எதுவும் இல்லை.",
     clearDataAndReset: "தரவை அழித்து பயன்பாட்டை மீட்டமைக்கவும்",
@@ -2280,7 +2665,7 @@ export const translations = {
     voicePreview: "வணக்கம், இது தேர்ந்தெடுக்கப்பட்ட குரல்.",
     voiceErrorGeneric: "மன்னிக்கவும், குரல் உள்ளீடு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
     voiceErrorNoSpeech: "நான் அதைக் கேட்கவில்லை. மீண்டும் பேச முயற்சிக்கவும்.",
-    voiceErrorNotAllowed: "குரல் உள்ளீட்டிற்கு மைக்ரோஃபோன் அணுகல் தேவை.",
+    voiceErrorNotAllowed: "குரல் உள்ளீட்டிற்கு மைக்ரோஃபோన్ அணுகல் தேவை.",
     crisisWarningTitle: "நீங்கள் संकटத்தில் இருப்பதாகத் தெரிகிறது.",
     crisisWarningBody: "நீங்கள் இப்படி உணரும்போது உதவி கேட்பது முக்கியம். உங்கள் அவசரத் தொடர்புகள் கீழே உள்ளன. அவர்களில் ஒருவருடன் பேச அல்லது உதவிப் பிரிவைப் பார்வையிடவும்.",
     callNow: "இப்போது அழைக்கவும்",
@@ -2302,6 +2687,9 @@ export const translations = {
     confirm: "உறுதிப்படுத்தவா?",
     greatJobJournaling: "நாட்குறிப்பு எழுதியது அருமை ✨ எழுதுவது மன அழுத்தத்தை 30% குறைக்கிறது.",
     reflectionOn: "பற்றிய பிரதிபலிப்பு ",
+    howAreYouFeeling: "நீங்கள் இப்போது எப்படி உணர்கிறீர்கள்?",
+    addANote: "ஒரு குறிப்பைச் சேர்க்கவும்... (விருப்பத்தேர்வு)",
+    saveMood: "மனநிலையைச் சேமி",
 
     // Breathing
     takeADeepBreath: "ஒரு ஆழ்ந்த மூச்சை எடுங்கள் 🌿",
@@ -2328,6 +2716,23 @@ export const translations = {
     helplineAasraDesc: "24x7, துன்பத்தில் இருப்பவர்களுக்கு ரகசிய ஆதரவு.",
     helplineIcall: "iCALL உளவியல் உதவி எண் (TISS)",
     helplineIcallDesc: "திங்கள்-சனி, காலை 8 முதல் இரவு 10 வரை. தொழில்முறை ஆலோசனை.",
+
+    // Trends
+    trends: "போக்குகள்",
+    moodTrends: "மனநிலை போக்குகள்",
+    calendar: "நாட்காட்டி",
+    graph: "வரைபடம்",
+    week: "வாரம்",
+    month: "மாதம்",
+    year: "ஆண்டு",
+    noMoodsLogged: "இன்னும் மனநிலைகள் பதிவு செய்யப்படவில்லை.",
+    logMoodsToSeeTrends: "உங்கள் போக்குகளை இங்கே காண நாட்குறிப்புக்குப் பிறகு உங்கள் மனநிலையைப் பதிவு செய்யுங்கள்.",
+    happy: "மகிழ்ச்சி",
+    neutral: "நடுநிலை",
+    sad: "சோகம்",
+    stressed: "மன அழுத்தம்",
+    lightMode: "லைட் பயன்முறை",
+    darkMode: "டார்க் பயன்முறை",
   },
   ml: {
     // Onboarding
@@ -2363,6 +2768,10 @@ export const translations = {
     spouse: "പങ്കാളി",
     sibling: "സഹോദരൻ/സഹോദരി",
     selectRelation: "ബന്ധം തിരഞ്ഞെടുക്കുക",
+    updateYourInfo: "നിങ്ങളുടെ വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്യുക",
+    saveChanges: "മാറ്റങ്ങൾ സംരക്ഷിക്കുക",
+    edit: "എഡിറ്റുചെയ്യുക",
+    cancel: "റദ്ദാക്കുക",
 
     // Welcome
     yourMindsFriend: "നിങ്ങളുടെ മനസ്സിന്റെ സുഹൃത്ത് — രഹസ്യാത്മകം. പിന്തുണ നൽകുന്നത്. വിധിയില്ലാത്തത്.",
@@ -2379,7 +2788,7 @@ export const translations = {
     initialChatMessage: "ഹായ്! ഞാൻ മൻ മിത്ര, നിങ്ങളുടെ മനസ്സിന്റെ സുഹൃത്ത്. വന്നതിന് നന്ദി. ഇന്ന് നിങ്ങളുടെ മനസ്സിൽ എന്താണ്? നിങ്ങൾക്ക് ഇഷ്ടമുള്ളത്ര കൂടുതലോ കുറവോ പങ്കുവെക്കാൻ മടിക്കരുത്. 💙",
     listening: "കേൾക്കുന്നു...",
     thinking: "ചിന്തിക്കുന്നു...",
-    yourProfile: "നിങ്ങളുടെ വിവരങ്ങൾ",
+    yourInfo: "നിങ്ങളുടെ വിവരങ്ങൾ",
     name: "പേര്",
     noProfileInfo: "പ്രൊഫൈൽ വിവരങ്ങൾ കണ്ടെത്തിയില്ല.",
     clearDataAndReset: "ഡാറ്റ മായ്ച്ച് ആപ്പ് പുനഃസജ്ജമാക്കുക",
@@ -2427,6 +2836,9 @@ export const translations = {
     confirm: "സ്ഥിരീകരിക്കണോ?",
     greatJobJournaling: "ജേണലിംഗ് നന്നായി ചെയ്തു ✨ എഴുത്ത് സമ്മർദ്ദം 30% കുറയ്ക്കുന്നു.",
     reflectionOn: "-നെക്കുറിച്ചുള്ള പ്രതിഫലനം ",
+    howAreYouFeeling: "നിങ്ങൾക്ക് ഇപ്പോൾ എങ്ങനെ തോന്നുന്നു?",
+    addANote: "ഒരു കുറിപ്പ് ചേർക്കുക... (ഓപ്ഷണൽ)",
+    saveMood: "മൂഡ് സംരക്ഷിക്കുക",
 
     // Breathing
     takeADeepBreath: "ഒരു ദീർഘശ്വാസം എടുക്കുക 🌿",
@@ -2453,13 +2865,30 @@ export const translations = {
     helplineAasraDesc: "24x7, ദുരിതത്തിലുള്ളവർക്ക് രഹസ്യ പിന്തുണ.",
     helplineIcall: "iCALL സൈക്കോസോഷ്യൽ ഹെൽപ്പ് ലൈൻ (TISS)",
     helplineIcallDesc: "തിങ്കൾ-ശനി, രാവിലെ 8 മുതൽ രാത്രി 10 വരെ. പ്രൊഫഷണൽ കൗൺസിലിംഗ്.",
+
+    // Trends
+    trends: "ട്രെൻഡുകൾ",
+    moodTrends: "മൂഡ് ട്രെൻഡുകൾ",
+    calendar: "കലണ്ടർ",
+    graph: "ഗ്രാഫ്",
+    week: "ആഴ്ച",
+    month: "മാസം",
+    year: "വർഷം",
+    noMoodsLogged: "ഇതുവരെ മൂഡുകളൊന്നും ലോഗ് ചെയ്തിട്ടില്ല.",
+    logMoodsToSeeTrends: "നിങ്ങളുടെ ട്രെൻഡുകൾ ഇവിടെ കാണുന്നതിന് ജേണലിംഗിന് ശേഷം നിങ്ങളുടെ മൂഡ് ലോഗ് ചെയ്യുക.",
+    happy: "സന്തോഷം",
+    neutral: "സാധാരണം",
+    sad: "ദുഃഖം",
+    stressed: "സമ്മർദ്ദം",
+    lightMode: "ലൈറ്റ് മോഡ്",
+    darkMode: "ഡാർക്ക് മോഡ്",
   },
   or: {
     // Onboarding
     welcomeToMannMitra: "ମନ୍ ମିତ୍ରକୁ ସ୍ଵାଗତ 💙",
     letsGetToKnowYou: "ଆସନ୍ତୁ ଆପଣଙ୍କୁ ଟିକେ ଜାଣିବା। ଏହା ଆପଣଙ୍କ ଡିଭାଇସରେ ରହିଥାଏ ଏବଂ ଆପଣଙ୍କ ଅନୁଭବକୁ ବ୍ୟକ୍ତିଗତ କରିବାରେ ସାହାଯ୍ୟ କରେ।",
     whatShouldICallYou: "ମୁଁ ଆପଣଙ୍କୁ କ'ଣ ଡାକିବି?",
-    yourName: "ଆପଣଙ୍କ ନାମ",
+    yourName: "ଆਪଣଙ୍କ ନାମ",
     gender: "ଲିଙ୍ଗ",
     selectYourGender: "ଆପଣଙ୍କ ଲିଙ୍ਗ ବାଛନ୍ତୁ",
     male: "ପୁରୁଷ",
@@ -2469,25 +2898,29 @@ export const translations = {
     dateOfBirth: "ଜନ୍ମ ତାରିଖ",
     country: "ଦେଶ",
     selectYourCountry: "ଆପଣଙ୍କ ଦେଶ ବାଛନ୍ତୁ",
-    preferredLanguage: "ପସନ୍ଦିତା ଭାଷା",
-    selectYourLanguage: "ଆପଣଙ୍କ ଭାଷା ବାଛନ୍ତୁ",
-    pleaseFillAllFields: "ଦୟାକରି ଆଗକୁ ବଢିବା ପାଇଁ ସମସ୍ਤ ଫିଲ୍ଡ ପୂରଣ କରନ୍ତୁ।",
-    couldNotSaveDetails: "ଆପଣଙ୍କ ବିବରଣୀ ସଂରକ୍ଷଣ କରାଯାଇପାରିଲା ନାହିଁ। ଦୟାକରି ନିଶ୍ଚିત କରନ୍ତୁ ଯେ ଆପଣଙ୍କ ବ୍ରାଉଜର୍ ସ୍ଥାନୀୟ ସଂରକ୍ଷଣକୁ ସମର୍ଥନ କରେ।",
+    preferredLanguage: "ପਸନ୍ଦିତା ଭାଷା",
+    selectYourLanguage: "ଆਪଣଙ୍କ ଭାଷା ବାଛନ୍ତୁ",
+    pleaseFillAllFields: "ଦୟାକରି ଆଗକୁ ବଢିବା ପାଇଁ ସମସ୍ତ ଫିଲ୍ଡ ପୂରଣ କରନ୍ତୁ।",
+    couldNotSaveDetails: "ଆପଣଙ୍କ ବିବରଣୀ ସଂରକ୍ଷଣ କରାଯାଇପାରିଲା ନାହିଁ। ଦୟାକରି ନିଶ୍ਚିત କରନ୍ତୁ ଯେ ଆପଣଙ୍କ ବ୍ରାଉଜର୍ ସ୍ଥାନୀୟ ସଂରକ୍ଷଣକୁ ସମର୍ଥନ କରେ।",
     saveAndContinue: "ସଂରକ୍ଷଣ କରନ୍ତୁ ଏବଂ ଆଗକୁ ବଢନ୍ତୁ",
     emergencyContacts: "ଜରୁରୀକାଳୀନ ସମ୍ପର୍କ",
-    emergencyContactsDescription: "ଯଦି ଆମେ କୌଣସି ସଙ୍କଟ ଚିହ୍ନଟ କରୁ, ତେବେ ଆପଣଙ୍କୁ ଯୋଗାଯੋଗ କରିବା ପାଇଁ ପରାମର୍ଶ ଦେଇପାରୁଥିବା ଅତି କମରେ ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଡନ୍ତୁ। ଏହା ଆପଣଙ୍କ ଡିଭାଇସରେ ରହିବ।",
+    emergencyContactsDescription: "ଯଦି ଆମେ କୌଣସି ସଙ୍କଟ ଚିହ୍ନଟ କରୁ, ତେବେ ଆପଣଙ୍କୁ ଯੋਗାଯੋଗ କରିବା ପାଇଁ ପରାମର୍ଶ ଦେଇପାରୁଥିବା ଅତି କମରେ ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଡନ୍ତୁ। ଏହା ଆପଣଙ୍କ ଡିଭାଇସରେ ରହିବ।",
     relation: "ସମ୍ପର୍କ",
     phoneNumber: "ଫୋନ୍ ନମ୍ବର",
-    addContact: "+ ସମ୍ପର୍କ ଯୋଡନ୍ତୁ",
+    addContact: "+ ସମ୍ପର୍କ ଯੋଡନ୍ତୁ",
     removeContact: "ହଟାନ୍ତୁ",
-    atLeastOneContact: "ଦୟାକରି ଅତି କମରେ ଗୋଟିଏ ବୈଧ ଜରୁରୀକାଳୀନ ସମ୍ପର୍କ ଯୋଡନ୍ତୁ।",
-    contactLimitReached: "ଆପଣ ସର୍ବାଧିକ 3ଟି ସମ୍ପର୍କ ଯୋଡିପାରିବେ।",
+    atLeastOneContact: "ଦୟାକରି ଅତି କମରେ ଗੋଟିଏ ବୈଧ ଜରୁରୀକାଳୀନ ସମ୍ପର୍କ ଯੋଡନ୍ତୁ।",
+    contactLimitReached: "ଆਪଣ ସର୍ବାଧିକ 3ଟି ସମ୍ପର୍କ ଯੋଡିପାରିବେ।",
     parent: "ଅଭିଭାବକ",
     guardian: "ଅଭିଭାବକ",
     friend: "ବନ୍ଧୁ",
     spouse: "ଜୀବନସାଥୀ",
     sibling: "ଭାଇ/ଭଉଣୀ",
     selectRelation: "ସମ୍ପର୍କ ବାଛନ୍ତୁ",
+    updateYourInfo: "ଆପଣଙ୍କ ସୂଚନା ଅପଡେଟ୍ କରନ୍ତୁ",
+    saveChanges: "ପରିବର୍ତ୍ତନ ସଂରକ୍ଷଣ କରନ୍ତୁ",
+    edit: "ସମ୍ପਾਦਨਾ କରନ୍ତୁ",
+    cancel: "ବାତିଲ୍ କରନ୍ତୁ",
 
     // Welcome
     yourMindsFriend: "ଆପଣଙ୍କ ମନର ବନ୍ଧୁ — ଗୋପନୀୟ। ସହାୟକ। ଅଣ-ନିର୍ଣ୍ଣାୟକ।",
@@ -2501,88 +2934,108 @@ export const translations = {
     resources: "ସାହାଯ୍ୟ",
     voice: "ଭଏସ୍",
     typeAMessage: "ଏକ ସନ୍ଦେଶ ଟାଇପ୍ କରନ୍ତୁ...",
-    initialChatMessage: "ନମସ୍କାର! ମୁଁ ମନ୍ ମିତ୍ର, ଆପଣଙ୍କ ମନର ବନ୍ଧୁ। ଆସିଥିବାରୁ ଧନ୍ୟବାଦ। ଆଜି ଆପଣଙ୍କ ମନରେ କ'ଣ ଅଛି? ଆପଣ ଯେତେ ଅଧିକ କିମ୍ବା କମ୍ ଚାହିଁବେ, ସେୟାର୍ କରିବାକୁ ମୁକ୍ତ ଅନୁଭବ କରନ୍ତୁ। 💙",
+    initialChatMessage: "ନମସ୍କାର! ମୁଁ ମନ୍ ମିତ୍ର, ଆପଣଙ୍କ ମନର ବନ୍ଧୁ। ଆସିଥିବାରୁ ଧନ୍ୟବାଦ। ଆଜି ଆପଣଙ୍କ ମନରେ କ'ଣ ଅଛି? ଆਪଣ ଯେତେ ଅଧିକ କିମ୍ବା କମ୍ ଚାହିଁବେ, ସେୟାର୍ କରିବାକୁ ମୁକ୍ତ ଅନୁଭବ କରନ୍ତୁ। 💙",
     listening: "ଶୁଣୁଛି...",
     thinking: "ଭାବୁଛି...",
-    yourProfile: "ଆପଣଙ୍କ ସୂଚନା",
+    yourInfo: "ଆପଣଙ୍କ ସୂଚନା",
     name: "ନାମ",
-    noProfileInfo: "କୌଣସି ପ୍ରୋଫାଇଲ୍ ସୂଚନା ମିଳିଲା ନାହିଁ।",
-    clearDataAndReset: "ଡାଟା ସଫା କରନ୍ତୁ ଏବଂ ଆପ୍ ପୁନଃସେਟ୍ କରନ୍ତୁ",
+    noProfileInfo: "କୌଣସି ପ୍ରୋਫାଇਲ୍ ସୂଚନା ମିଳିଲା ନାହିଁ।",
+    clearDataAndReset: "ଡାଟା ସਫਾ କରନ୍ତୁ ଏବଂ ଆਪ୍ ପୁନଃସେਟ୍ କରନ୍ତୁ",
     confirmReset: "ପୁନର୍ବାର କ୍ଲିକ୍ କରି ନିଶ୍ਚିତ କରନ୍ତୁ",
     chatHistory: "ଚାଟ୍ ଇତିହାସ",
-    newChat: "+ ନୂଆ ଚାଟ୍",
+    newChat: "+ ନୂଆ ଚାਟ୍",
     newChatTitle: "ନୂଆ ବାର୍ତ୍ତାଳਾପ",
     creating: "ତିଆରି କରୁଛି...",
     clearAllHistory: "ସମସ୍ਤ ଇତିହାସ ସଫା କରନ୍ତୁ",
-    confirmClear: "ସଫା କରିବା ନିଶ୍ਚିତ କରନ୍ତୁ?",
-    voiceAssistant: "ଭଏସ୍ ଆସିଷ୍ଟାଣ୍ଟ",
-    enableVoiceAssistant: "ଭଏସ୍ ଆସିଷ୍ଟାଣ୍ଟ ସକ୍ଷମ କରନ୍ତୁ",
+    confirmClear: "ସਫਾ କରିବା ନିଶ୍ਚିତ କରନ୍ତୁ?",
+    voiceAssistant: "ଭଏସ୍ ଆସିଷ୍ਟାଣ୍ਟ",
+    enableVoiceAssistant: "ଭଏସ୍ ଆସିଷ୍ਟାଣ୍ਟ ସକ୍ଷମ କରନ୍ତୁ",
     language: "ଭାଷା",
-    selectLanguage: "ଭାଷା ବାଛନ୍ତୁ",
+    selectLanguage: "ଭਾଷਾ ବାଛନ୍ତୁ",
     english: "ଇଂରାଜୀ",
     hindi: "ହିନ୍ଦୀ",
-    chooseAVoice: "ଏକ ଭଏସ୍ ବାଛନ୍ତୁ",
+    chooseAVoice: "ଏକ ଭଏସ୍ ବਾଛନ୍ତୁ",
     femaleVoice: "ମହିଳା ଭଏସ୍",
     maleVoice: "ପୁରୁଷ ଭଏସ୍",
     aQuickThought: "ଏକ ଶୀଘ୍ର ଚିନ୍ତା",
-    chatReflection: "ଚାଟ୍ ପ୍ରତିଫଳନ",
-    generateTitlePrompt: `ଜଣେ ଉପଭୋକ୍ତା ଏବଂ ଏକ AI ସୁସ୍ଥତା ସାଥୀଙ୍କ ମଧ୍ୟରେ ନିମ୍ନଲିଖିତ ଚାଟ୍ ପଢନ୍ତୁ। ମୂଳ ଭାବନା କିମ୍ବା ବିଷୟକୁ ଧରିଥିବା ଏକ ସଂକ୍ଷିପ୍ତ, କୋମଳ ଶୀର୍ଷକ (ସର୍ବାଧିକ 5 ଶବ୍ਦ) ସୃଷ୍ଟି କରନ୍ତୁ। ଉଦାହରଣ: "କାମରେ ଅତିষ্ঠିତ ଅନୁଭବ କରିବା," "ବନ୍ଧୁତା ଉପରେ ପ୍ରତିଫଳନ," "ଦୁଃଖର ଏକ ମୁହୂର୍ତ୍ତ।" ଉଦ୍ଧୃତି ଚିହ୍ନ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ।\n\nବାର୍ତ୍ତାଳਾପ:\n`,
+    chatReflection: "ਚਾਟ୍ ਪ੍ਰਤੀਫਲନ",
+    generateTitlePrompt: `ଜଣେ ଉପଭੋକ୍ତା ଏବଂ ଏକ AI ସୁସ୍ଥତା ସାଥୀଙ୍କ ମଧ୍ୟରେ ନିମ୍ନଲିଖିତ ଚਾਟ୍ ਪଢନ୍ତୁ। ମୂଳ ଭାਵਨਾ କିମ୍ବା ବିଷୟକୁ ଧରିଥିବା ଏକ ସଂକ୍ଷିਪਤ, କੋਮଳ ଶୀର୍ଷକ (ସର୍ਬਾଧିକ 5 ଶਬ୍ਦ) ସୃଷ୍ଟି କରନ୍ତୁ। ଉଦାହରଣ: "କାମରେ ଅତିষ্ঠିତ ଅନୁଭବ କରିବା," "ବନ୍ਧୁਤਾ ଉପରେ ପ୍ରਤੀਫਲਨ," "ଦୁଃଖର ଏକ ମୁହୂର୍ତ୍ତ।" ଉଦ୍ଧୃତି ଚିହ୍ନ ବ୍ୟବਹାର କରନ୍ତୁ ନାହିଁ।\n\nବାର୍ତ୍ତାଳਾପ:\n`,
     voicePreview: "ନମସ୍କାର, ଏହା ମନୋନୀତ ଭଏସ୍।",
-    voiceErrorGeneric: "କ୍ଷମା କରନ୍ତୁ, ଭଏସ୍ ଇନପୁଟ୍ ବିଫଳ ହେଲା। ଦୟାକରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।",
+    voiceErrorGeneric: "କ୍ଷମା କରନ୍ତୁ, ଭଏସ୍ ଇନପୁਟ୍ ବିଫଳ ହେଲା। ଦୟାକରି ପୁଣି ଚେଷ୍ਟਾ କରନ୍ତୁ।",
     voiceErrorNoSpeech: "ମୁଁ ତାହା ଶୁଣିପାରିଲି ନାହିଁ। ଦୟାକରି ପୁଣି କହିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।",
-    voiceErrorNotAllowed: "ଭଏସ୍ ଇନପୁଟ୍ ପାଇଁ ମାଇକ୍ରୋଫୋନ୍ ଆକ୍ସେସ୍ ଆବଶ୍ୟକ।",
-    crisisWarningTitle: "ଆପଣ ସଙ୍କଟରେ ଥିବା ପରି ଲାଗୁଛି।",
-    crisisWarningBody: "ଯେତେବେଳେ ଆପଣ ଏପରି ଅନୁଭବ କରୁଛନ୍ତି, ସେତେବେଳେ ସାହାଯ୍ୟ ମାଗିବା ଜରୁରୀ। ଆପଣଙ୍କ ଜରୁରୀକାଳୀନ ସମ୍ପର୍କଗୁଡ଼ିକ ନିମ୍ନରେ ଦିଆଯାଇଛି। ଦୟାକରି ସେମାନଙ୍କ ମଧ୍ୟରୁ ଜଣଙ୍କ ସହ କଥା ହେବାକୁ କିମ୍ବା ସାହାଯ୍ୟ ବିଭାଗକୁ ଯିବାକୁ ବିଚାର କରନ୍ତୁ।",
-    callNow: "ବର୍ତ୍ତମାନ କଲ୍ କରନ୍ତୁ",
+    voiceErrorNotAllowed: "ଭଏସ୍ ଇਨਪੁਟ୍ ପାଇଁ ମାଇକ୍ରୋଫୋନ୍ ଆକ୍ସେସ୍ ଆବଶ୍ୟକ।",
+    crisisWarningTitle: "ଆਪଣ ସଙ୍କଟରେ ଥିବା ପରି ଲାଗୁଛି।",
+    crisisWarningBody: "ଯେତେବେଳେ ଆପଣ ଏପରି ଅନੁଭବ କରୁଛନ୍ତି, ସେତେବେଳେ ସାହାଯ୍ୟ ମਾଗିବା ଜରୁରୀ। ଆପଣଙ୍କ ଜରୁରୀକାଳୀନ ସମ୍ପର୍କଗୁଡ଼ିକ ନିମ୍ਨରେ ଦିଆଯାଇଛି। ଦୟାକରି ସେମାନଙ୍କ ମଧ୍ୟରୁ ଜଣଙ୍କ ସହ କଥା ହେବାକୁ କିମ୍ବା ସାହାଯ୍ୟ ବିଭਾਗକୁ ଯିବାକୁ ବିଚାର କରନ୍ତୁ।",
+    callNow: "ବର୍ତ୍ਤମਾਨ କਲ୍ କରନ୍ତୁ",
     close: "ବନ୍ଦ କରନ୍ତୁ",
 
     // Journal
-    yourSafeSpace: "ଆପଣଙ୍କ ସୁରକ୍ଷିତ ସ୍ଥାନ ✨",
-    giveYourReflectionTitle: "ଆପଣଙ୍କ ପ୍ରତିଫଳନକୁ ଏକ ଶୀର୍ଷକ ଦିଅନ୍ତୁ...",
-    writeDownYourThoughts: "ଆପଣଙ୍କ ଚିନ୍ତା, ଭାବନା, କିମ୍ବା ମନରେ ଥିବା ଯେକୌଣସି ଜିନିଷ ଲେଖନ୍ତୁ। ଏହା ଆପଣଙ୍କ ନିଜସ୍ଵ କୋଣ 💛",
-    saveMyReflection: "ମୋର ପ୍ରତିଫଳନ ସଂରକ୍ଷଣ କରନ୍ତୁ 📝",
-    backToChat: "← ଚାଟକୁ ଫେରନ୍ତୁ",
-    yourReflections: "ଆପଣଙ୍କ ପ୍ରତିଫଳନ ❤️",
-    noJournalEntries: "ଆପଣ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଜର୍ନାଲ୍ ଏଣ୍ଟ୍ରି ଲେଖିନାହାଁନ୍ତି।",
-    savedReflectionsAppearHere: "ଆପଣଙ୍କ ସଂରକ୍ଷିତ ପ୍ରତିଫଳନଗୁଡ଼ିକ ଏଠାରେ ଦେଖାଯିବ।",
+    yourSafeSpace: "ଆਪଣଙ୍କ ସୁରକ୍ଷିତ ସ୍ଥାନ ✨",
+    giveYourReflectionTitle: "ଆପଣଙ୍କ ପ୍ରਤੀଫਲନକୁ ଏକ ଶୀର୍ଷକ ଦିଅନ୍ତୁ...",
+    writeDownYourThoughts: "ଆପଣଙ୍କ ଚିନ୍ਤਾ, ଭାବନା, କିମ୍ବା ମନରେ ଥିବା ଯେକୌଣସି ଜିନିଷ ଲେଖନ୍ତୁ। ଏହା ଆਪଣଙ୍କ ନିଜସ୍ଵ କୋଣ 💛",
+    saveMyReflection: "ମୋର ପ୍ରତିਫਲਨ ସଂରକ୍ଷଣ କରନ୍ତୁ 📝",
+    backToChat: "← ଚਾଟକୁ ଫେରନ୍ତୁ",
+    yourReflections: "ଆପଣଙ୍କ ପ୍ରତିਫਲନ ❤️",
+    noJournalEntries: "ଆਪଣ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଜର୍ନାଲ୍ ଏଣ୍ଟ୍ରି ଲେଖିନାହାଁନ୍ତି।",
+    savedReflectionsAppearHere: "ଆପଣଙ୍କ ସଂରକ୍ଷିତ ପ୍ରਤੀਫਲନଗୁଡ଼ିକ ଏଠାରେ ଦେଖାଯିବ।",
     backToJournal: "← ଜର୍ନାଲକୁ ଫେରନ୍ତୁ",
-    backToReflections: "← ପ୍ରତିଫଳନକୁ ଫେରନ୍ତୁ",
-    deleteEntry: "ଏଣ୍ଟ୍ରି ଡିଲିଟ୍ କରନ୍ତୁ",
-    confirmDeletion: "ଡିଲିଟ୍ ନିଶ୍ਚିତ କରନ୍ତୁ",
+    backToReflections: "← ପ୍ରତିਫਲନକୁ ଫେରନ୍ତୁ",
+    deleteEntry: "ଏଣ୍ଟ੍ਰି ଡିଲିଟ୍ କରନ୍ତୁ",
+    confirmDeletion: "ଡିଲਿਟ୍ ନିଶ୍ਚିତ କରନ୍ତୁ",
     confirm: "ନିଶ୍ਚିତ?",
-    greatJobJournaling: "ଜର୍ନାଲିଂରେ ବହୁତ ଭଲ କାମ ✨ ଲେଖିବା ଚାପକୁ 30% କମ୍ କରେ।",
-    reflectionOn: "ଉପରେ ପ୍ରତିଫଳନ ",
+    greatJobJournaling: "ଜର୍ନାଲିଂରେ ବହୁତ ଭਲ କାମ ✨ ଲେଖିବା ଚାପକୁ 30% କମ୍ କରେ।",
+    reflectionOn: "ଉਪରେ ପ୍ରਤੀਫਲନ ",
+    howAreYouFeeling: "ଆਪଣ ବର୍ତ୍ତମਾਨ କେମିତି ଅନੁଭବ କରୁଛନ୍ତି?",
+    addANote: "ଏକ ଟିପ୍ପଣୀ ଯੋଡନ୍ତୁ... (ବୈକଳ୍ਪିକ)",
+    saveMood: "ମୁଡ୍ ਸੇଭ୍ କରନ୍ତୁ",
 
     // Breathing
-    takeADeepBreath: "ଏକ ଗଭୀର ଶ୍ଵାସ ନିଅନ୍ତୁ 🌿",
-    breathingExerciseDescription: "ଆରାମ କରିବା, ପୁନର୍ବାର ଧ୍ୟାନ ଦେବା, ଏବଂ ଆପଣଙ୍କ ମନକୁ ପୁନର୍ଜୀବିତ କରିବା ପାଇଁ ଏହି ସରଳ ବକ୍ସ ଶ୍ଵାସକ୍ରିୟା ଅଭ୍ୟାସକୁ ଅନୁସରଣ କରନ୍ତୁ।",
+    takeADeepBreath: "ଏକ ଗଭୀର ଶ୍ଵାਸ ନିଅନ୍ତୁ 🌿",
+    breathingExerciseDescription: "ଆਰਾਮ କରିବା, ପୁନର୍ବାର ଧ୍ୟାନ ଦେବା, ଏବଂ ଆପଣଙ୍କ ମନକୁ ਪੁନର୍ଜୀବିତ କରିବା ପାଇଁ ଏହି ସରଳ ବକ୍ସ ଶ୍ଵାਸକ୍ରିୟା ଅଭ୍ୟାସକୁ ଅନୁସରଣ କରନ୍ତୁ।",
     startBreathing: "ଶ୍ଵାସକ୍ରିୟା ଆରମ୍ଭ କରନ୍ତୁ 🌬️",
-    getReady: "ପ୍ରସ୍ତୁତ ହୁଅନ୍ତୁ...",
-    inhale: "ଶ୍ଵାସ ଭିତରକୁ ନିଅନ୍ତୁ…୨…୩…୪ 🌿",
+    getReady: "ପ୍ରସ୍ତୁਤ ହୁଅନ୍ତୁ...",
+    inhale: "ଶ୍ଵାਸ ଭିତରକୁ ନିଅନ୍ତୁ…୨…୩…୪ 🌿",
     hold: "ଧରି ରଖନ୍ତୁ…",
-    exhale: "ଶ୍ଵାସ ବାହାରକୁ ଛାଡନ୍ତୁ…୨…୩…୪ 🌿",
+    exhale: "ଶ୍ଵାਸ ବਾਹାରକୁ ଛାଡନ୍ତୁ…୨…୩…୪ 🌿",
     pause: "ବିରତି…",
-    endSessionAndReturn: "ସେସନ୍ ସମାପ୍ତ କରନ୍ତୁ ଏବଂ ଫେରନ୍ତୁ",
+    endSessionAndReturn: "ସେସନ୍ ସମਾପ୍ତ କରନ୍ତୁ ଏବଂ ଫେରନ୍ତୁ",
 
     // Resources
     youAreNotAlone: "ଆପଣ ଏକା ନୁହଁନ୍ତି 💙",
     resourcesFor: "ପାଇଁ ସମ୍ବଳ",
-    fetchingResources: "ଆପଣଙ୍କ ପାଇଁ ସ୍ଥାନୀୟ ସମ୍ବଳ ଖୋଜୁଛି...",
-    noResourcesFound: "ଆପଣଙ୍କ ଅଞ୍ଚଳ ପାଇଁ କୌଣସି ନିର୍ଦ୍ଦିଷ୍ଟ ସମ୍ବଳ ମିଳିଲା ନାହିଁ। ଏଠାରେ କିଛି ବିଶ୍ବସ୍ତରୀୟ ବିକଳ୍ପ ଅଛି।",
-    immediateDangerWarning: "ଯଦି ଆପଣ ତୁରନ୍ତ ବିପଦରେ ଅଛନ୍ତି, ତେବେ ଦୟାକରି ଆପଣଙ୍କ ସ୍ଥାନୀୟ ଜରୁରୀକାଳୀନ ନମ୍ବରକୁ କଲ୍ କରନ୍ତୁ।",
-    helplineKiran: "କିରଣ ମାନସିକ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍",
+    fetchingResources: "ଆਪଣଙ୍କ ପାଇଁ ସ୍ଥାନୀୟ ସମ୍ବଳ ଖୋଜୁଛି...",
+    noResourcesFound: "ଆପଣଙ୍କ ଅଞ୍ਚଳ ପାଇଁ କୌଣସି ନିର୍ଦ୍ଦିଷ୍ଟ ସମ୍ବଳ ମିଳିଲା ନାହିଁ। ଏଠାରେ କିଛି ବିଶ୍ବସ୍ତରୀୟ ବିକଳ୍ਪ ଅଛି।",
+    immediateDangerWarning: "ଯଦି ଆਪଣ ତୁରନ୍ତ ବିପଦରେ ଅଛନ୍ତି, ତେବେ ଦୟାକରି ଆਪଣଙ୍କ ସ୍ଥାନୀୟ ଜରୁରୀକାଳୀନ ନମ୍ବରକୁ କਲ୍ କରନ୍ତୁ।",
+    helplineKiran: "କିରଣ ମାନସିକ ସ୍ୱାସ୍ଥ୍ୟ ହେਲ୍ପଲାଇନ୍",
     helplineKiranDesc: "24x7, ଭାରତ ସରକାରଙ୍କ ଏକ ପଦକ୍ଷେପ।",
-    helplineVandrevala: "ଭାନ୍ଦ୍ରେୱାଲା ଫାଉଣ୍ଡେସନ୍ ହେଲ୍ପଲାଇନ୍",
+    helplineVandrevala: "ଭਾନ୍ଦ୍ରੇୱਾଲା ଫਾଉଣ୍ଡੇସନ୍ ହେਲ୍ପਲାଇନ୍",
     helplineVandrevalaDesc: "24x7, ବହୁଭାଷୀ ସମର୍ଥନ।",
-    helplineAasra: "ଆସରା (ଆତ୍ମହତ୍ୟା ନିବାରଣ)",
-    helplineAasraDesc: "24x7, ଅସୁବିଧାରେ ଥିବା ଲୋକଙ୍କ ପାଇଁ ଗୋପନୀୟ ସମର୍ଥନ।",
-    helplineIcall: "iCALL ସାଇକୋସୋସିଆଲ୍ ହେଲ୍ପଲାଇନ୍ (TISS)",
-    helplineIcallDesc: "ସୋମ-ଶନି, ସକାଳ ୮ଟାରୁ ରାତି ୧୦ଟା ପର୍ଯ୍ୟନ୍ତ। ପେଶାଗତ ପରାମର୍ଶ।",
+    helplineAasra: "ଆਸରା (ଆତ୍ମହତ୍ୟା ନିବਾਰଣ)",
+    helplineAasraDesc: "24x7, ଅସୁବିଧାରେ ଥିବା ଲୋਕଙ୍କ ପାଇଁ ଗੋପନୀୟ ସମର୍ଥନ।",
+    helplineIcall: "iCALL ସାଇକୋସੋସିଆਲ୍ ହେਲ୍ପਲାଇନ୍ (TISS)",
+    helplineIcallDesc: "ସੋਮ-ଶନି, ସକାଳ ୮ଟାରୁ ରାତି ୧୦ଟା ପର୍ଯ୍ୟନ୍ତ। ପੇਸ਼ାଗତ ପରାମର୍ଶ।",
+
+    // Trends
+    trends: "ପ୍ରବୃତ୍ତି",
+    moodTrends: "ମନୋଭਾବ ପ୍ରବୃତ୍ତି",
+    calendar: "କ୍ୟାଲେଣ୍ଡର",
+    graph: "ଗ୍ରਾଫ୍",
+    week: "ସପ୍ਤਾହ",
+    month: "ମାସ",
+    year: "ବର୍ଷ",
+    noMoodsLogged: "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ମନୋଭਾବ ଲଗ୍ ହୋଇନାହିଁ।",
+    logMoodsToSeeTrends: "ଏଠାରେ ଆପଣଙ୍କର ପ୍ରବୃତ୍ତି ଦେଖିବା ପାଇଁ ଜର୍ନାଲିଂ ପରେ ଆਪଣଙ୍କର ମନୋଭਾବ ଲଗ୍ କରନ୍ତୁ।",
+    happy: "ଖୁସି",
+    neutral: "ସਾଧାରଣ",
+    sad: "ଦୁଃଖିତ",
+    stressed: "ଚਾପଗ୍ରସ୍ତ",
+    lightMode: "ଲਾਈଟ୍ ਮੋਡ୍",
+    darkMode: "ଡార్ਕ ਮੋਡ୍",
   },
   bn: {
     // Onboarding
     welcomeToMannMitra: "মন মিত্রতে স্বাগতম 💙",
-    letsGetToKnowYou: "আসুন আপনার সম্পর্কে একটু জানি। এটি আপনার ডিভাইসে থাকে এবং আপনার অভিজ্ঞতাকে ব্যক্তিগতকৃত করতে সাহায্য করে।",
+    letsGetToKnowYou: "আসুন আপনার সম্পর্কে একটু জানি। এটি আপনার ডিভাইсе থাকে এবং আপনার অভিজ্ঞতাকে ব্যক্তিগতকৃত করতে সাহায্য করে।",
     whatShouldICallYou: "আমি আপনাকে কী বলে ডাকব?",
     yourName: "আপনার নাম",
     gender: "লিঙ্গ",
@@ -2613,6 +3066,10 @@ export const translations = {
     spouse: "স্বামী/স্ত্রী",
     sibling: "ভাই/বোন",
     selectRelation: "সম্পর্ক নির্বাচন করুন",
+    updateYourInfo: "আপনার তথ্য আপডেট করুন",
+    saveChanges: "পরিবর্তন সংরক্ষণ করুন",
+    edit: "সম্পাদনা করুন",
+    cancel: "বাতিল করুন",
 
     // Welcome
     yourMindsFriend: "আপনার মনের বন্ধু — গোপনীয়। সহায়ক। বিচারহীন।",
@@ -2627,12 +3084,12 @@ export const translations = {
     voice: "ভয়েস",
     typeAMessage: "একটি বার্তা টাইপ করুন...",
     initialChatMessage: "হাই! আমি মন মিত্র, আপনার মনের বন্ধু। আসার জন্য ধন্যবাদ। আজ আপনার মনে কী আছে? আপনি যতটা চান ততটা বা কম শেয়ার করতে নির্দ্বিধায়। 💙",
-    listening: "শুনছি...",
+    listening: "שুনছি...",
     thinking: "ভাবছি...",
-    yourProfile: "আপনার তথ্য",
+    yourInfo: "আপনার তথ্য",
     name: "নাম",
     noProfileInfo: "কোনো প্রোফাইল তথ্য পাওয়া যায়নি।",
-    clearDataAndReset: "ডেটা সাফ করুন এবং অ্যাপ রিসেট করুন",
+    clearDataAndReset: "ডেটা সাফ করুন এবং অ্যাপ রিসেਟ করুন",
     confirmReset: "নিশ্চিত করতে আবার ক্লিক করুন",
     chatHistory: "চ্যাটের ইতিহাস",
     newChat: "+ নতুন চ্যাট",
@@ -2677,6 +3134,9 @@ export const translations = {
     confirm: "নিশ্চিত?",
     greatJobJournaling: "জার্নালিংয়ে দুর্দান্ত কাজ ✨ লেখা মানসিক চাপ 30% কমায়।",
     reflectionOn: "সম্পর্কে প্রতিফলন ",
+    howAreYouFeeling: "আপনি এখন কেমন অনুভব করছেন?",
+    addANote: "একটি নোট যোগ করুন... (ঐচ্ছিক)",
+    saveMood: "মুড সংরক্ষণ করুন",
 
     // Breathing
     takeADeepBreath: "একটি গভীর শ্বাস নিন 🌿",
@@ -2703,6 +3163,23 @@ export const translations = {
     helplineAasraDesc: "24x7, দুর্দশাগ্রস্তদের জন্য গোপনীয় সহায়তা।",
     helplineIcall: "iCALL সাইকোসোশ্যাল হেল্পলাইন (TISS)",
     helplineIcallDesc: "সোম-শনি, সকাল ৮টা-রাত ১০টা। পেশাদার পরামর্শ।",
+
+    // Trends
+    trends: "ট্রেন্ডস",
+    moodTrends: "মুড ট্রেন্ডস",
+    calendar: "ক্যালেন্ডার",
+    graph: "গ্রাফ",
+    week: "সপ্তাহ",
+    month: "মাস",
+    year: "বছর",
+    noMoodsLogged: "এখনও কোনো মুড লগ করা হয়নি।",
+    logMoodsToSeeTrends: "আপনার ট্রেন্ড এখানে দেখতে জার্নালিংয়ের পরে আপনার মুড লগ করুন।",
+    happy: "খুশি",
+    neutral: "সাধারণ",
+    sad: "দুঃখিত",
+    stressed: "চাপग्रस्त",
+    lightMode: "লাইট মোড",
+    darkMode: "ডার্ক মোড",
   },
   bho: {
     // Onboarding
@@ -2738,6 +3215,10 @@ export const translations = {
     spouse: "जीवनसाथी",
     sibling: "भाई-बहिन",
     selectRelation: "रिश्ता चुनीं",
+    updateYourInfo: "आपन जानकारी अपडेट करीं",
+    saveChanges: "बदलाव सहेजीं",
+    edit: "संपादित करीं",
+    cancel: "रद्द करीं",
 
     // Welcome
     yourMindsFriend: "राउर मन के मित्र — गोपनीय। सहायक। गैर-निर्णयात्मक।",
@@ -2754,7 +3235,7 @@ export const translations = {
     initialChatMessage: "नमस्ते! हम मन मित्र हईं, राउर मन के दोस्त। आवे खातिर धन्यवाद। आज राउर मन में का बा? जेतना अधिका भा कम चाहे, साझा करे खातिर स्वतंत्र महसूस करीं। 💙",
     listening: "सुनत बानी...",
     thinking: "सोचत बानी...",
-    yourProfile: "राउर जानकारी",
+    yourInfo: "राउर जानकारी",
     name: "नाम",
     noProfileInfo: "कवनो प्रोफ़ाइल जानकारी ना मिलल।",
     clearDataAndReset: "डेटा साफ करीं आ ऐप रीसेट करीं",
@@ -2802,6 +3283,9 @@ export const translations = {
     confirm: "सुनिश्चित?",
     greatJobJournaling: "जर्नलिंग में बढ़िया काम ✨ लिखे से तनाव 30% कम हो जाला।",
     reflectionOn: "पर चिंतन ",
+    howAreYouFeeling: "रउआ अबहीं कइसन महसूस करत बानी?",
+    addANote: "एगो नोट जोड़ीं... (वैकल्पिक)",
+    saveMood: "मूड सहेजीं",
 
     // Breathing
     takeADeepBreath: "एगो गहिर साँस लीं 🌿",
@@ -2828,6 +3312,23 @@ export const translations = {
     helplineAasraDesc: "24x7, संकट में लोग खातिर गोपनीय समर्थन।",
     helplineIcall: "iCALL साइकोसोशल हेल्पलाइन (TISS)",
     helplineIcallDesc: "सोम-शनि, सुबह 8 बजे से रात 10 बजे तक। पेशेवर परामर्श।",
+
+    // Trends
+    trends: "रुझान",
+    moodTrends: "मनोदशा के रुझान",
+    calendar: "कैलेंडर",
+    graph: "ग्राफ",
+    week: "हफ्ता",
+    month: "महीना",
+    year: "साल",
+    noMoodsLogged: "अबहीं ले कवनो मनोदशा लॉग नइखे भइल।",
+    logMoodsToSeeTrends: "आपन रुझान इहाँ देखे खातिर जर्नलिंग के बाद आपन मनोदशा लॉग करीं।",
+    happy: "खुश",
+    neutral: "सामान्य",
+    sad: "उदास",
+    stressed: "तनाव में",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
   },
   ja: {
     // Onboarding
@@ -2863,6 +3364,10 @@ export const translations = {
     spouse: "配偶者",
     sibling: "兄弟姉妹",
     selectRelation: "関係を選択",
+    updateYourInfo: "情報を更新",
+    saveChanges: "変更を保存",
+    edit: "編集",
+    cancel: "キャンセル",
 
     // Welcome
     yourMindsFriend: "あなたの心の友 — 秘密厳守。協力的。無批判。",
@@ -2879,7 +3384,7 @@ export const translations = {
     initialChatMessage: "こんにちは！私はあなたの心の友、マン・ミトラです。お立ち寄りいただきありがとうございます。今日はどんなことを考えていますか？好きなだけ、または少しだけでも自由に共有してください。💙",
     listening: "聞いています...",
     thinking: "考えています...",
-    yourProfile: "あなたの情報",
+    yourInfo: "あなたの情報",
     name: "名前",
     noProfileInfo: "プロフィール情報が見つかりません。",
     clearDataAndReset: "データを消去してアプリをリセット",
@@ -2927,7 +3432,10 @@ export const translations = {
     confirm: "確認しますか？",
     greatJobJournaling: "ジャーナリングお疲れ様でした ✨ 書くことはストレスを30%軽減します。",
     reflectionOn: "についての振り返り ",
-    
+    howAreYouFeeling: "今の気分はどうですか？",
+    addANote: "メモを追加... (任意)",
+    saveMood: "気分を保存",
+
     // Breathing
     takeADeepBreath: "深呼吸してください 🌿",
     breathingExerciseDescription: "この簡単なボックス呼吸法に従って、リラックスし、集中力を取り戻し、心をリフレッシュしてください。",
@@ -2953,10 +3461,27 @@ export const translations = {
     helplineAasraDesc: "24時間365日、苦しんでいる人々のための秘密のサポート。",
     helplineIcall: "iCALL 心理社会的ヘルプライン (TISS)",
     helplineIcallDesc: "月～土、午前8時～午後10時。専門的なカウンセリング。",
+
+    // Trends
+    trends: "トレンド",
+    moodTrends: "気分のトレンド",
+    calendar: "カレンダー",
+    graph: "グラフ",
+    week: "週",
+    month: "月",
+    year: "年",
+    noMoodsLogged: "まだ気分が記録されていません。",
+    logMoodsToSeeTrends: "ジャーナリングの後に気分を記録して、ここでトレンドを確認してください。",
+    happy: "幸せ",
+    neutral: "普通",
+    sad: "悲しい",
+    stressed: "ストレス",
+    lightMode: "ライトモード",
+    darkMode: "ダークモード",
   },
   pa: {
     // Onboarding
-    welcomeToMannMitra: "ਮਨ ਮਿੱਤਰ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗତ ਹੈ 💙",
+    welcomeToMannMitra: "ਮਨ ਮਿੱਤਰ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ 💙",
     letsGetToKnowYou: "ਆਓ ਤੁਹਾਨੂੰ ਥੋੜ੍ਹਾ ਜਾਣੀਏ। ਇਹ ਤੁਹਾਡੇ ਡਿਵਾਈਸ 'ਤੇ ਰਹਿੰਦਾ ਹੈ ਅਤੇ ਤੁਹਾਡੇ ਅਨੁਭવ ਨੂੰ ਨਿੱਜੀ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਦਾ ਹੈ।",
     whatShouldICallYou: "ਮੈਂ ਤੁਹਾਨੂੰ ਕੀ ਕਹਿ ਕੇ ਬੁਲਾਵਾਂ?",
     yourName: "ਤੁਹਾਡਾ ਨਾਮ",
@@ -2988,6 +3513,10 @@ export const translations = {
     spouse: "ਜੀਵਨ ਸਾਥੀ",
     sibling: "ਭੈਣ-ਭਰਾ",
     selectRelation: "ਰਿਸ਼ਤਾ ਚੁਣੋ",
+    updateYourInfo: "ਆਪਣੀ ਜਾਣਕਾਰੀ ਅੱਪਡੇਟ ਕਰੋ",
+    saveChanges: "ਬਦਲਾਅ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+    edit: "ਸੰਪਾਦਿਤ ਕਰੋ",
+    cancel: "ਰੱਦ ਕਰੋ",
     
     // Welcome
     yourMindsFriend: "ਤੁਹਾਡੇ ਮਨ ਦਾ ਮਿੱਤਰ — ਗੁਪਤ। ਸਹਾਇਕ। ਗੈਰ-ਨਿਰਣਾਇਕ।",
@@ -3004,10 +3533,10 @@ export const translations = {
     initialChatMessage: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਮਨ ਮਿੱਤਰ ਹਾਂ, ਤੁਹਾਡੇ ਮਨ ਦਾ ਦੋਸਤ। ਆਉਣ ਲਈ ਧੰਨਵਾਦ। ਅੱਜ ਤੁਹਾਡੇ ਮਨ ਵਿੱਚ ਕੀ ਹੈ? ਜਿੰਨਾ ਤੁਸੀਂ ਚਾਹੋ ਓਨਾ ਸਾਂਝਾ ਕਰਨ ਲਈ ਬੇਝਿਜਕ ਮਹਿਸੂਸ ਕਰੋ। 💙",
     listening: "ਸੁਣ ਰਿਹਾ ਹਾਂ...",
     thinking: "ਸੋਚ ਰਿਹਾ ਹਾਂ...",
-    yourProfile: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ",
+    yourInfo: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ",
     name: "ਨਾਮ",
     noProfileInfo: "ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਜਾਣਕਾਰੀ ਨਹੀਂ ਮਿਲੀ।",
-    clearDataAndReset: "ਡਾਟਾ ਸਾਫ਼ ਕਰੋ ਅਤੇ ਐਪ ਰੀਸੈਟ ਕਰੋ",
+    clearDataAndReset: "ਡاਟਾ ਸਾਫ਼ ਕਰੋ ਅਤੇ ਐਪ ਰੀਸੈਟ ਕਰੋ",
     confirmReset: "ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ ਦੁਬਾਰਾ ਕਲਿੱਕ ਕਰੋ",
     chatHistory: "ਚੈਟ ਇਤਿਹਾਸ",
     newChat: "+ ਨਵੀਂ ਚੈਟ",
@@ -3026,65 +3555,10 @@ export const translations = {
     maleVoice: "ਮਰਦ ਦੀ ਆਵਾਜ਼",
     aQuickThought: "ਇੱਕ ਤੇਜ਼ ਵਿਚਾਰ",
     chatReflection: "ਚੈਟ ਪ੍ਰਤੀਬਿੰਬ",
-    generateTitlePrompt: `ਇੱਕ ਉਪਭੋਗਤਾ ਅਤੇ ਇੱਕ AI ਤੰਦਰੁਸਤੀ ਸਾਥੀ ਵਿਚਕਾਰ ਹੇਠ ਲਿਖੀ ਗੱਲਬਾਤ ਪੜ੍ਹੋ। ਇੱਕ ਛੋਟਾ, ਨਰਮ ਸਿਰਲੇਖ (ਵੱਧ ਤੋਂ ਵੱਧ 5 ਸ਼ਬਦ) ਬਣਾਓ ਜੋ ਮੁੱਖ ਭਾਵਨਾ ਜਾਂ ਵਿਸ਼ੇ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੋਵੇ। ਉਦਾਹਰਨਾਂ: "ਕੰਮ 'ਤੇ ਭਾਰੀ ਮਹਿਸੂਸ ਕਰਨਾ," "ਦੋਸਤੀ 'ਤੇ ਪ੍ਰਤੀਬਿੰਬ," "ਉਦਾਸੀ ਦਾ ਇੱਕ ਪਲ।" ਹਵਾਲਾ ਚਿੰਨ੍ਹ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰੋ।\n\nਗੱਲਬਾਤ:\n`,
-    voicePreview: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ਇਹ ਚੁਣੀ ਹੋਈ ਆਵਾਜ਼ ਹੈ।",
-    voiceErrorGeneric: "ਮਾਫ਼ ਕਰਨਾ, ਵੌਇਸ ਇਨਪੁਟ ਫੇਲ੍ਹ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-    voiceErrorNoSpeech: "ਮੈਂ ਉਹ ਨਹੀਂ ਸੁਣਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਬੋਲਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-    voiceErrorNotAllowed: "ਵੌਇਸ ਇਨਪੁਟ ਲਈ ਮਾਈਕ੍ਰੋਫੋਨ ਪਹੁੰਚ ਦੀ ਲੋੜ ਹੈ।",
-    crisisWarningTitle: "ਲੱਗਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਪ੍ਰੇਸ਼ਾਨੀ ਵਿੱਚ ਹੋ।",
-    crisisWarningBody: "ਜਦੋਂ ਤੁਸੀਂ ਇਸ ਤਰ੍ਹਾਂ ਮਹਿਸੂਸ ਕਰ ਰਹੇ ਹੋ ਤਾਂ ਕਿਸੇ ਨਾਲ ਸੰਪਰਕ ਕਰਨਾ ਮਹੱਤਵਪੂਰਨ ਹੈ। ਤੁਹਾਡੇ ਐਮਰਜੈਂਸੀ ਸੰਪਰਕ ਹੇਠਾਂ ਦਿੱਤੇ ਗਏ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਉਹਨਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਇੱਕ ਨਾਲ ਗੱਲ ਕਰਨ ਜਾਂ ਮਦਦ ਸੈਕਸ਼ਨ 'ਤੇ ਜਾਣ ਬਾਰੇ ਵਿਚਾਰ ਕਰੋ।",
-    callNow: "ਹੁਣੇ ਕਾਲ ਕਰੋ",
-    close: "ਬੰਦ ਕਰੋ",
-
-    // Journal
-    yourSafeSpace: "ਤੁਹਾਡੀ ਸੁਰੱਖਿਅਤ ਥਾਂ ✨",
-    giveYourReflectionTitle: "ਆਪਣੇ ਪ੍ਰਤੀਬਿੰਬ ਨੂੰ ਇੱਕ ਸਿਰਲੇਖ ਦਿਓ...",
-    writeDownYourThoughts: "ਆਪਣੇ ਵਿਚਾਰ, ਭਾਵਨਾਵਾਂ, ਜਾਂ ਮਨ ਵਿੱਚ ਜੋ ਕੁਝ ਵੀ ਹੈ, ਲਿਖੋ। ਇਹ ਤੁਹਾਡਾ ਨਿੱਜੀ ਕੋਨਾ ਹੈ 💛",
-    saveMyReflection: "ਮੇਰਾ ਪ੍ਰਤੀਬਿੰਬ ਸੁਰੱਖਿਅਤ ਕਰੋ 📝",
-    backToChat: "← ਚੈਟ 'ਤੇ ਵਾਪਸ ਜਾਓ",
-    yourReflections: "ਤੁਹਾਡੇ ਪ੍ਰਤੀਬਿੰਬ ❤️",
-    noJournalEntries: "ਤੁਸੀਂ ਅਜੇ ਤੱਕ ਕੋਈ ਜਰਨਲ ਐਂਟਰੀ ਨਹੀਂ ਲਿਖੀ ਹੈ।",
-    savedReflectionsAppearHere: "ਤੁਹਾਡੇ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਪ੍ਰਤੀਬਿੰਬ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।",
-    backToJournal: "← ਜਰਨਲ 'ਤੇ ਵਾਪਸ ਜਾਓ",
-    backToReflections: "← ਪ੍ਰਤੀਬਿੰਬਾਂ 'ਤੇ ਵਾਪਸ ਜਾਓ",
-    deleteEntry: "ਐਂਟਰੀ ਮਿਟਾਓ",
-    confirmDeletion: "ਮਿਟਾਉਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
-    confirm: "ਪੁਸ਼ਟੀ ਕਰੋ?",
-    greatJobJournaling: "ਬਹੁਤ ਵਧੀਆ ਜਰਨਲਿੰਗ ✨ ਲਿਖਣ ਨਾਲ ਤਣਾਅ 30% ਘੱਟ ਹੁੰਦਾ ਹੈ।",
-    reflectionOn: "ਇਸ 'ਤੇ ਪ੍ਰਤੀਬਿੰਬ ",
-
-    // Breathing
-    takeADeepBreath: "ਇੱਕ ਡੂੰਘਾ ਸਾਹ ਲਓ 🌿",
-    breathingExerciseDescription: "ਆਪਣੇ ਮਨ ਨੂੰ ਸ਼ਾਂਤ ਕਰਨ, ਮੁੜ ਧਿਆਨ ਕੇਂਦਰਿਤ ਕਰਨ ਅਤੇ ਰੀਚਾਰਜ ਕਰਨ ਲਈ ਇਸ ਸਧਾਰਨ ਬਾਕਸ ਬ੍ਰੀਥਿੰਗ ਅਭਿਆਸ ਦੀ ਪਾਲਣਾ ਕਰੋ।",
-    startBreathing: "ਸਾਹ ਲੈਣਾ ਸ਼ੁਰੂ ਕਰੋ 🌬️",
-    getReady: "ਤਿਆਰ ਹੋ ਜਾਓ...",
-    inhale: "ਸਾਹ ਅੰਦਰ ਲਓ…੨…੩…੪ 🌿",
-    hold: "ਰੋਕੋ…",
-    exhale: "ਸਾਹ ਬਾਹਰ ਛੱਡੋ…੨…੩…੪ 🌿",
-    pause: "ਵਿਰਾਮ…",
-    endSessionAndReturn: "ਸੈਸ਼ਨ ਖਤਮ ਕਰੋ ਅਤੇ ਵਾਪਸ ਆਓ",
-
-    // Resources
-    youAreNotAlone: "ਤੁਸੀਂ ਇਕੱਲੇ ਨਹੀਂ ਹੋ 💙",
-    resourcesFor: "ਲਈ ਸਰੋਤ",
-    fetchingResources: "ਤੁਹਾਡੇ ਲਈ ਸਥਾਨਕ ਸਰੋਤ ਲੱਭ ਰਿਹਾ ਹਾਂ...",
-    noResourcesFound: "ਤੁਹਾਡੇ ਖੇਤਰ ਲਈ ਕੋਈ ਖਾਸ ਸਰੋਤ ਨਹੀਂ ਮਿਲੇ। ਇੱਥੇ ਕੁਝ ਗਲੋਬਲ ਵਿਕਲਪ ਹਨ।",
-    immediateDangerWarning: "ਜੇਕਰ ਤੁਸੀਂ ਤੁਰੰਤ ਖਤਰੇ ਵਿੱਚ ਹੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਸਥਾਨਕ ਐਮਰਜੈਂਸੀ ਨੰਬਰ 'ਤੇ ਕਾਲ ਕਰੋ।",
-    helplineKiran: "ਕਿਰਨ ਮਾਨਸਿਕ ਸਿਹਤ ਹੈਲਪਲਾਈਨ",
-    helplineKiranDesc: "24x7, ਭਾਰਤ ਸਰਕਾਰ ਦੀ ਇੱਕ ਪਹਿਲ।",
-    helplineVandrevala: "ਵੰਦ੍ਰੇਵਾਲਾ ਫਾਊਂਡੇਸ਼ਨ ਹੈਲਪਲਾਈਨ",
-    helplineVandrevalaDesc: "24x7, ਬਹੁ-ਭਾਸ਼ਾਈ ਸਹਾਇਤਾ।",
-    helplineAasra: "ਆਸਰਾ (ਖੁਦਕੁਸ਼ੀ ਦੀ ਰੋਕਥਾਮ)",
-    helplineAasraDesc: "24x7, ਸੰਕਟ ਵਿੱਚ ਲੋਕਾਂ ਲਈ ਗੁਪਤ ਸਹਾਇਤਾ।",
-    helplineIcall: "iCALL ਮਨੋ-ਸਮਾਜਿਕ ਹੈਲਪਲਾਈਨ (TISS)",
-    helplineIcallDesc: "ਸੋਮ-ਸ਼ਨੀ, ਸਵੇਰੇ 8 ਵਜੇ ਤੋਂ ਰਾਤ 10 ਵਜੇ ਤੱਕ। ਪੇਸ਼ੇਵਰ ਸਲਾਹ।",
+    generateTitlePrompt: `ਇੱਕ ਉਪਭੋਗਤਾ ਅਤੇ ਇੱਕ AI ਤੰਦਰੁਸਤੀ ਸਾਥੀ ਵਿਚਕਾਰ ਹੇਠ ਲਿਖੀ ਗੱਲਬਾਤ ਪੜ੍ਹੋ। ਇੱਕ ਛੋਟਾ, ਨਰਮ ਸਿਰਲੇਖ (ਵੱਧ ਤੋਂ ਵੱਧ 5 ਸ਼ਬਦ) ਬਣਾਓ ਜੋ ਮੁੱਖ ਭਾਵਨਾ ਜਾਂ ਵਿਸ਼ੇ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੋਵੇ। ਉਦਾਹਰਨਾਂ: "ਕੰਮ 'ਤੇ ਭਾਰੀ ਮਹਿਸੂਸ ਕਰਨਾ," "ਦੋਸਤੀ 'ਤੇ ਪ੍ਰਤੀਬਿੰਬ," "ਉਦਾਸੀ ਦਾ ਇੱਕ ਪਲ।" ਹਵਾਲਾ ਚਿੰਨ੍ਹ ਨਾ ਵਰਤੋ।\n\nਗੱਲਬਾਤ:\n`,
   },
-} as const; // Using "as const" for stronger type inference
+};
 
-// A type for the language codes (e.g., 'en', 'hi')
-// FIX: Changed from `keyof typeof translations` to `string` to allow for all language codes
-// from the `LANGUAGES` array (e.g., 'zh-CN'), not just those with UI translations.
-export type Language = string;
-
-// A type for the translation keys (e.g., 'welcomeToMannMitra')
+// FIX: Added TranslationKey and Language types to resolve import errors across the application.
 export type TranslationKey = keyof typeof translations.en;
+export type Language = 'ar' | 'bn' | 'bho' | 'zh-CN' | 'en' | 'fr' | 'de' | 'gu' | 'hr' | 'hi' | 'hi-Latn' | 'ja' | 'ko' | 'ml' | 'mr' | 'or' | 'pa' | 'ra' | 'es' | 'ta' | 'tr' | 'ur';

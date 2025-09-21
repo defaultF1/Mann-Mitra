@@ -101,11 +101,11 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t, playCl
   }, []);
 
   return (
-    <div className="flex flex-col h-full items-center justify-center bg-white relative p-6">
+    <div className="flex flex-col h-full items-center justify-center bg-white dark:bg-slate-900 relative p-6">
       {!isStarted ? (
         <div className="text-center animate-fadeIn flex flex-col items-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">{t('takeADeepBreath')}</h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-xs">
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-4">{t('takeADeepBreath')}</h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-xs">
               {t('breathingExerciseDescription')}
             </p>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-apple-blue mb-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
@@ -113,7 +113,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t, playCl
             </svg>
             <button
                 onClick={handleStart}
-                className="bg-apple-blue text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors"
+                className="bg-apple-blue dark:bg-blue-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
                 aria-label="Begin breathing exercise"
             >
                 {t('startBreathing')}
@@ -121,7 +121,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t, playCl
         </div>
       ) : (
         <>
-            <h2 className="text-2xl text-gray-600 font-medium absolute top-20 text-center" aria-live="assertive">
+            <h2 className="text-2xl text-slate-600 dark:text-slate-300 font-medium absolute top-20 text-center" aria-live="assertive">
                 {instruction}
             </h2>
 
@@ -136,7 +136,7 @@ const BreathingScreen: React.FC<BreathingScreenProps> = ({ onNavigate, t, playCl
       <div className="absolute bottom-0 left-0 right-0 p-8">
         <button
           onClick={handleNav}
-          className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-colors"
+          className="w-full bg-apple-blue dark:bg-blue-600 text-white font-bold py-4 px-4 rounded-full text-lg shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
         >
           {isStarted ? t('endSessionAndReturn') : t('backToChat')}
         </button>

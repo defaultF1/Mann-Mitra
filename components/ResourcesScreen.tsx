@@ -17,11 +17,11 @@ interface HelplineItemProps {
 const USER_PROFILE_KEY = 'mann-mitra-user-profile';
 
 const HelplineItem: React.FC<HelplineItemProps> = ({ resource, playClick }) => (
-  <div className="bg-gray-100 p-4 rounded-2xl flex items-center justify-between gap-4 animate-fadeIn">
+  <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-2xl flex items-center justify-between gap-4 animate-fadeIn">
     <div className="flex-grow">
-      <p className="font-bold text-gray-800">{resource.name}</p>
-      <p className="text-sm text-gray-600 mt-1">{resource.description}</p>
-      <p className="text-gray-600 mt-1 font-medium">{resource.number}</p>
+      <p className="font-bold text-slate-800 dark:text-slate-200">{resource.name}</p>
+      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{resource.description}</p>
+      <p className="text-slate-600 dark:text-slate-400 mt-1 font-medium">{resource.number}</p>
       {resource.website && (
          <a href={resource.website} onClick={playClick} target="_blank" rel="noopener noreferrer" className="text-sm text-apple-blue hover:underline mt-1 inline-block">
             Visit Website →
@@ -137,15 +137,15 @@ const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate, t, isOnli
   };
 
   return (
-    <div className="p-6 h-full flex flex-col bg-white">
-      <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">{t('youAreNotAlone')}</h1>
+    <div className="p-6 h-full flex flex-col bg-white dark:bg-slate-900">
+      <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2 text-center">{t('youAreNotAlone')}</h1>
       {userCountry && !isLoading && (
-        <p className="text-gray-500 text-center mb-6">{t('resourcesFor')} {userCountry}</p>
+        <p className="text-slate-500 dark:text-slate-400 text-center mb-6">{t('resourcesFor')} {userCountry}</p>
       )}
       
       <div className="space-y-4 flex-grow overflow-y-auto">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full text-center text-gray-500">
+          <div className="flex flex-col items-center justify-center h-full text-center text-slate-500 dark:text-slate-400">
              <svg className="animate-spin h-8 w-8 text-apple-blue mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -154,7 +154,7 @@ const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate, t, isOnli
           </div>
         ) : (
           <>
-            {error && <p className="text-center text-yellow-600 bg-yellow-100 p-3 rounded-lg mb-4">{error}</p>}
+            {error && <p className="text-center text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg mb-4">{error}</p>}
             {resources.map((res, index) => (
               <HelplineItem key={index} resource={res} playClick={playClick} />
             ))}
@@ -162,13 +162,13 @@ const ResourcesScreen: React.FC<ResourcesScreenProps> = ({ onNavigate, t, isOnli
         )}
       </div>
 
-      <p className="text-center text-gray-500 text-sm mt-6">
+      <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-6">
         {t('immediateDangerWarning')}
       </p>
 
       <button
         onClick={handleNav}
-        className="w-full bg-apple-blue text-white font-bold py-4 px-4 rounded-full text-lg mt-4 shadow-lg hover:bg-blue-600 transition-colors"
+        className="w-full bg-apple-blue dark:bg-blue-600 text-white font-bold py-4 px-4 rounded-full text-lg mt-4 shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
       >
         {t('backToChat')}
       </button>

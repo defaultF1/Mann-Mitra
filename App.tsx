@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+// FIX: Corrected import to include TranslationKey and Language
 import { Screen, translations, TranslationKey, Language } from './types';
 import OnboardingScreen from './components/OnboardingScreen';
 import WelcomeScreen from './components/WelcomeScreen';
@@ -6,8 +7,10 @@ import ChatScreen from './components/ChatScreen';
 import JournalScreen from './components/JournalScreen';
 import BreathingScreen from './components/BreathingScreen';
 import ResourcesScreen from './components/ResourcesScreen';
+import MoodTrendsScreen from './components/MoodTrendsScreen';
 
 const APP_LANGUAGE_KEY = 'mann-mitra-app-language';
+const THEME_KEY = 'mann-mitra-theme';
 
 // Custom hook to detect online status
 const useOnlineStatus = () => {
@@ -33,8 +36,37 @@ const useOnlineStatus = () => {
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen | null>(null);
   const [language, setLanguageState] = useState<Language>('en');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      const savedTheme = localStorage.getItem(THEME_KEY) as 'light' | 'dark' | null;
+      if (savedTheme) {
+        return savedTheme; // Respect user's saved choice
+      }
+    } catch (error) {
+      console.error("Could not read theme from local storage:", error);
+    }
+    return 'light'; // Default to light mode if nothing is saved
+  });
   const isOnline = useOnlineStatus();
   const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Apply and save theme changes
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove(theme === 'light' ? 'dark' : 'light');
+    root.classList.add(theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (error) {
+      console.error("Could not save theme to local storage:", error);
+    }
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    playClick();
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  }, []);
 
   // Sound effects logic
   const initAudioContext = useCallback(() => {
@@ -196,25 +228,38 @@ const App: React.FC = () => {
     return baseTranslationSet[key] || translations.en[key];
 }, [language]);
 
+  const handleEditProfile = () => {
+    playClick();
+    setIsEditingProfile(true);
+    setCurrentScreen(Screen.Onboarding);
+  };
+
 
   const renderScreen = () => {
     switch (currentScreen) {
       case Screen.Onboarding:
-        return <OnboardingScreen onNavigate={setCurrentScreen} t={t} language={language} setLanguage={setLanguage} playClick={playClick} />;
+        return <OnboardingScreen onNavigate={(screen) => {
+            setCurrentScreen(screen);
+            setIsEditingProfile(false); // Reset when navigating away from onboarding
+          }} 
+          isEditing={isEditingProfile}
+          t={t} language={language} setLanguage={setLanguage} playClick={playClick} />;
       case Screen.Welcome:
         return <WelcomeScreen onNavigate={setCurrentScreen} t={t} playClick={playClick} />;
       case Screen.Chat:
-        return <ChatScreen onNavigate={setCurrentScreen} t={t} language={language} setLanguage={setLanguage} isOnline={isOnline} playClick={playClick} playNotification={playNotification} />;
+        return <ChatScreen onNavigate={setCurrentScreen} onEditProfile={handleEditProfile} t={t} language={language} setLanguage={setLanguage} isOnline={isOnline} playClick={playClick} playNotification={playNotification} theme={theme} toggleTheme={toggleTheme} />;
       case Screen.Journal:
         return <JournalScreen onNavigate={setCurrentScreen} t={t} language={language} playClick={playClick} playSuccess={playSuccess} />;
       case Screen.Breathing:
         return <BreathingScreen onNavigate={setCurrentScreen} t={t} playClick={playClick} />;
       case Screen.Resources:
         return <ResourcesScreen onNavigate={setCurrentScreen} t={t} isOnline={isOnline} playClick={playClick} />;
+      case Screen.Trends:
+        return <MoodTrendsScreen onNavigate={setCurrentScreen} t={t} language={language} playClick={playClick} />;
       default:
         // Render a loading state or null while checking for the profile
         return (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full bg-white dark:bg-slate-900">
             <svg className="animate-spin h-8 w-8 text-apple-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -225,7 +270,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="font-sans bg-transparent max-w-md mx-auto h-screen flex flex-col shadow-2xl">
+    <div className="font-sans bg-slate-50 dark:bg-black max-w-md mx-auto h-screen flex flex-col shadow-2xl">
       {!isOnline && (
         <div className="bg-yellow-500 text-center text-black font-semibold text-sm py-1" role="status" aria-live="polite">
           Offline Mode

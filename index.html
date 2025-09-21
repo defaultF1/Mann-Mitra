@@ -14,6 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
@@ -43,6 +44,10 @@
               slideInRight: {
                 '0%': { transform: 'translateX(100%)' },
                 '100%': { transform: 'translateX(0)' },
+              },
+              pulseHeart: {
+                '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                '50%': { transform: 'scale(1.15)', opacity: '0.9' },
               }
             },
             animation: {
@@ -51,6 +56,7 @@
               fadeInBackdrop: 'fadeInBackdrop 0.3s ease-out forwards',
               slideInLeft: 'slideInLeft 0.3s cubic-bezier(0, 0, 0.2, 1) forwards',
               slideInRight: 'slideInRight 0.3s cubic-bezier(0, 0, 0.2, 1) forwards',
+              pulseHeart: 'pulseHeart 1.5s ease-in-out infinite'
             }
           }
         }
@@ -72,6 +78,9 @@
       }
       input[type="date"]::-webkit-calendar-picker-indicator:hover {
         opacity: 0.7;
+      }
+      .dark input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
       }
       
       /* Styles for rendered Markdown in AI chat bubbles */
@@ -114,6 +123,13 @@
           -webkit-text-fill-color: #1f2937 !important; /* Corresponds to Tailwind's text-gray-800 */
           transition: background-color 5000s ease-in-out 0s;
       }
+      .dark input:-webkit-autofill,
+      .dark input:-webkit-autofill:hover,
+      .dark input:-webkit-autofill:focus,
+      .dark input:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px #1e293b inset !important; /* dark:bg-slate-800 */
+          -webkit-text-fill-color: #e2e8f0 !important; /* dark:text-slate-200 */
+      }
 
       /* Custom Scrollbar Styles for a cleaner look */
       ::-webkit-scrollbar {
@@ -125,15 +141,40 @@
         background: #f1f5f9; /* A very light gray, matches bg-slate-100 */
         border-radius: 10px;
       }
+      .dark ::-webkit-scrollbar-track {
+        background: #0f172a; /* A dark slate color, matches bg-slate-900 */
+      }
 
       ::-webkit-scrollbar-thumb {
         background-color: #94a3b8; /* A muted slate color, matches slate-400 */
         border-radius: 10px;
         border: 2px solid #f1f5f9; /* Creates a padding effect */
       }
+       .dark ::-webkit-scrollbar-thumb {
+        background-color: #475569; /* A muted slate color, matches slate-600 */
+        border: 2px solid #0f172a; /* Creates a padding effect */
+      }
 
       ::-webkit-scrollbar-thumb:hover {
         background-color: #64748b; /* Darker on hover, matches slate-500 */
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background-color: #64748b; /* Lighter on hover, matches slate-500 */
+      }
+      
+      /* NEW STYLES for custom select dropdowns */
+      .custom-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem !important; /* Use !important to override other padding utilities if needed */
+      }
+      .dark .custom-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
       }
     </style>
 
@@ -150,7 +191,7 @@
 }
 </script>
 </head>
-  <body class="bg-gradient-to-b from-sky-100 to-white">
+  <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
